@@ -36,5 +36,7 @@ logging:
 
 liquibase:
   change-log: classpath:db/changelog/master.xml
+# java -jar C:\Users\admin\.m2\repository\org\liquibase\liquibase-core\3.5.3\liquibase-core-3.5.3.jar --driver=org.postgresql.Driver --classpath=C:\Users\admin\.m2\repository\org\postgresql\postgresql\42.1.4\postgresql-42.1.4.jar --changeLogFile=C:\git\spring-estimapi\src\main\resources\db\changelog\master.xml --url=jdbc:postgresql://localhost:5432/estimasys --username=estimasys_admin --password=password changelogSyncSQL
+
 
 spring.jpa.hibernate.ddl-auto: validate

@@ -3,7 +3,12 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
-    <include file="20171231-1-legacy-schema.xml" relativeToChangelogFile="true"/>
-    <include file="20180110-1-initial-oauth.xml" relativeToChangelogFile="true"/>
+    <changeSet id="1" author="klnprj">
+        <sqlFile path="legacy-schema.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="2" author="klnprj">
+        <sqlFile path="liquibase-sync.sql" relativeToChangelogFile="true"/>
+    </changeSet>
 
 </databaseChangeLog>
