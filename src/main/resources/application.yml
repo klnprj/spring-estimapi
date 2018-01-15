@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: spring-estimapi
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
+server:
+  address: 0.0.0.0
+  port: 10080
+#oauth2-data-db:
+#  url: jdbc:postgresql://${db-host}:${db-port}/estimasys
+#  username: admin
+#  password: password
+#  driver-class-name: org.postgresql.Driver
+#  testOnBorrow: true
+#  validationQuery: SELECT 1
+#  tomcat:
+#    max-wait: 5000
+#    max-active: 5
+#    max-idle: 3
+oauth2-data-db:
+  url: jdbc:h2:mem:oauth2db;DB_CLOSE_ON_EXIT=FALSE;MODE=PostgreSQL
+  driver-class-name: org.h2.Driver
+logging:
+  pattern:
+    console: '%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n'
+  level:
+    root: debug
+    org.springframework: info
+    org.hibernate: info
+    org.apache: info
+    org.springframework.web.client: debug
+#    org.hibernate.SQL: DEBUG
+#    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+liquibase:
+  change-log: classpath:db/changelog/master.xml
+
+spring.jpa.hibernate.ddl-auto: validate
