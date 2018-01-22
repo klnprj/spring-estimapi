@@ -5,6 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 
 //@SpringBootApplication
+// todo: Проверка корректной аутентификации фронта с новой схемой
+// todo Исправить тесты
 @Import({ServiceDefaultApplicationContext.class})
 public class ServiceLauncher {
     public static void main(String[] args) {

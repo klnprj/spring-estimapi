@@ -37,14 +37,14 @@ DROP TABLE userrole;
 DROP TABLE role;
 
 -- todo: migrate to oauth_client_details
-CREATE TABLE client (
-  id bigint NOT NULL,
-  version bigint NOT NULL,
-  accesstokenvalidityseconds integer,
-  clientid character varying(255) NOT NULL,
-  clientsecret character varying(255),
-  refreshtokenvalidityseconds integer
-);
+-- CREATE TABLE client (
+--   id bigint NOT NULL,
+--   version bigint NOT NULL,
+--   accesstokenvalidityseconds integer,
+--   clientid character varying(255) NOT NULL,
+--   clientsecret character varying(255),
+--   refreshtokenvalidityseconds integer
+-- );
 
 UPDATE oauth_client_details
 SET
@@ -60,7 +60,6 @@ SET
     FROM client c
   );
 
-DROP TABLE client;
 DROP TABLE client_additionalinformation;
 DROP TABLE client_authorities;
 DROP TABLE client_authorizedgranttypes;
@@ -68,6 +67,7 @@ DROP TABLE client_autoapprovescopes;
 DROP TABLE client_redirecturis;
 DROP TABLE client_resourceids;
 DROP TABLE client_scopes;
+DROP TABLE client;
 
 -- remove
 -- CREATE TABLE client_additionalinformation (
@@ -125,8 +125,6 @@ DROP TABLE client_scopes;
 --     value character varying(255) NOT NULL
 -- );
 
-DROP TABLE accesstoken;
-
 -- todo: remove?
 -- CREATE TABLE accesstoken_additionalinformation (
 --     additionalinformation bigint,
@@ -134,15 +132,15 @@ DROP TABLE accesstoken;
 --     additionalinformation_elt character varying(255) NOT NULL
 -- );
 
-DROP TABLE accesstoken_additionalinformation;
-
 -- todo: remove?
 -- CREATE TABLE accesstoken_scope (
 --     accesstoken_id bigint NOT NULL,
 --     scope_string character varying(255)
 -- );
 
+DROP TABLE accesstoken_additionalinformation;
 DROP TABLE accesstoken_scope;
+DROP TABLE accesstoken;
 
 -- todo: no migration data; remove
 -- CREATE TABLE authorizationcode (

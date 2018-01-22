@@ -11,6 +11,7 @@ import org.springframework.security.oauth2.config.annotation.configurers.ClientD
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
@@ -36,13 +37,21 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Override
     public void configure(final ClientDetailsServiceConfigurer clients) throws Exception {
 		clients.jdbc(dataSource)
-	        .withClient("client") 
+	        .withClient("client")
 	        .secret("clientpassword")
-	        .scopes("read", "write") 
+            .authorities("ROLE_CLIENT")
+            .scopes("read", "write")
 	        .authorizedGrantTypes("password")
-	        .accessTokenValiditySeconds(3600);
+	        .accessTokenValiditySeconds(60);
     }
-	
+
+//	private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+//	@Override
+//	public void configure(AuthorizationServerSecurityConfigurer security)
+//			throws Exception {
+//		security.passwordEncoder(passwordEncoder);
+//	}
+
 	@Bean
 	public TokenStore tokenStore() {
 		return new JdbcTokenStore(dataSource);

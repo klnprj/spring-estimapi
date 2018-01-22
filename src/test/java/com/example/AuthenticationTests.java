@@ -55,7 +55,7 @@ public class AuthenticationTests {
 
     @Test
     public void givenAccessToken_whenGetSecureRequest_thenOk() throws Exception {
-        String accessToken = obtainAccessToken("admin@mail.ru", "password");
+        String accessToken = obtainAccessToken("admin@mail.ru", "$2a$10$60mMZ0uJq7Ygpp0kaWcNoOwEXZRQVEdIVX5aYvyiC7cw5fyreOf3C");
 
         assertNotNull(accessToken);
 
