@@ -7,6 +7,8 @@ import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -24,6 +26,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = ServiceLauncher.class)
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
+@SqlGroup({
+        @Sql("/testdata/users-records.sql"),
+        @Sql("/testdata/authorities-records.sql")
+//        @Sql("/testdata/clients-records.sql")
+})
 public class AuthenticationTests {
 
     private static final String CLIENT_ID = "client";

@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Import;
 
 //@SpringBootApplication
 // todo: Проверка корректной аутентификации фронта с новой схемой
-// todo Исправить тесты
+// todo Использовать в тестах тестового клиента
 @Import({ServiceDefaultApplicationContext.class})
 public class ServiceLauncher {
     public static void main(String[] args) {

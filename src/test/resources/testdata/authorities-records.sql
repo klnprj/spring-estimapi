@@ -1,0 +1,1 @@
+insert into authorities (username, authority) values ('admin@mail.ru', 'ROLE_ADMIN');
