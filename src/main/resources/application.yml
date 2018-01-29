@@ -31,6 +31,7 @@ logging:
     org.hibernate: info
     org.apache: info
     org.springframework.web.client: debug
+    org.springframework.security: debug
 #    org.hibernate.SQL: DEBUG
 #    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 

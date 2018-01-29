@@ -33,13 +33,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	
 	@Override
     public void configure(final ClientDetailsServiceConfigurer clients) throws Exception {
-		clients.jdbc(dataSource)
-	        .withClient("client")
-	        .secret("$2a$04$38QzLEnJfZQ9yIoe1726Aufft4WNUj2j3x1t3LjobNeEVZlVuld/W")
-            .authorities("ROLE_CLIENT")
-            .scopes("read", "write")
-	        .authorizedGrantTypes("password")
-	        .accessTokenValiditySeconds(60);
+		clients.jdbc(dataSource);
     }
 
 	private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();

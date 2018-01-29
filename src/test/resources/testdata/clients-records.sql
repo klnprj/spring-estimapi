@@ -1,2 +1,2 @@
 insert into oauth_client_details (client_id, client_secret, scope, authorized_grant_types, authorities, access_token_validity, refresh_token_validity)
-values('test_client', '$2a$04$38QzLEnJfZQ9yIoe1726Aufft4WNUj2j3x1t3LjobNeEVZlVuld', 'READ,WRITE', 'refresh_token,password', 'ROLE_CLIENT', 60, 60);
+values('test_client', '$2a$04$B4BVPP2pJQ9olmRKLGKdYuIKDcG34xJXhmaXor4IIaSlg/U1S4TuK', 'READ,WRITE', 'refresh_token,password', 'ROLE_CLIENT', 60, 60);

@@ -12,6 +12,7 @@ import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -26,14 +27,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = ServiceLauncher.class)
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
+@Transactional
 @SqlGroup({
         @Sql("/testdata/users-records.sql"),
-        @Sql("/testdata/authorities-records.sql")
-//        @Sql("/testdata/clients-records.sql")
+        @Sql("/testdata/authorities-records.sql"),
+        @Sql("/testdata/clients-records.sql")
 })
 public class AuthenticationTests {
 
-    private static final String CLIENT_ID = "client";
+    private static final String CLIENT_ID = "test_client";
     private static final String CLIENT_SECRET = "clientpassword";
 
     @Autowired

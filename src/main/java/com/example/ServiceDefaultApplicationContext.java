@@ -2,6 +2,7 @@ package com.example;
 
 import com.example.config.AuthorizationServerConfig;
 import com.example.config.ResourceServerConfig;
+import com.example.config.WebSecurityConfigurer;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration;
@@ -22,6 +23,7 @@ import javax.sql.DataSource;
 @Configuration
 @ComponentScan("com.example.resource")
 @Import({
+//        WebSecurityConfigurer.class,
         AuthorizationServerConfig.class,
         ResourceServerConfig.class,
 
