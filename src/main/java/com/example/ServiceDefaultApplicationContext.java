@@ -23,7 +23,7 @@ import javax.sql.DataSource;
 @Configuration
 @ComponentScan("com.example.resource")
 @Import({
-//        WebSecurityConfigurer.class,
+        WebSecurityConfigurer.class,
         AuthorizationServerConfig.class,
         ResourceServerConfig.class,
 
