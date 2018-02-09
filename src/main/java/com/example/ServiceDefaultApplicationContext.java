@@ -1,6 +1,7 @@
 package com.example;
 
 import com.example.config.AuthorizationServerConfig;
+import com.example.config.CorsConfig;
 import com.example.config.ResourceServerConfig;
 import com.example.config.WebSecurityConfigurer;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -13,21 +14,21 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 @Configuration
 @ComponentScan("com.example.resource")
 @Import({
+        // security
         WebSecurityConfigurer.class,
         AuthorizationServerConfig.class,
         ResourceServerConfig.class,
 
-        // web part
+        // web
+        CorsConfig.class,
         WebMvcAutoConfiguration.class,
         DispatcherServletAutoConfiguration.class,
         EmbeddedServletContainerAutoConfiguration.class,
