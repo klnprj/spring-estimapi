@@ -69,14 +69,14 @@ public class AuthenticationTests {
 
         assertNotNull(accessToken);
 
-        mockMvc.perform(get("/products")
+        mockMvc.perform(get("/api/buildings")
                 .header("Authorization", "Bearer " + accessToken))
                 .andExpect(status().isOk());
     }
 
     @Test
     public void givenNoToken_whenGetSecureRequest_thenUnauthorized() throws Exception {
-        mockMvc.perform(get("/products")).andExpect(status().isUnauthorized());
+        mockMvc.perform(get("/api/buildings")).andExpect(status().isUnauthorized());
     }
 
 //    @Test
