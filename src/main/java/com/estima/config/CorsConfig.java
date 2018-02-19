@@ -1,4 +1,4 @@
-package com.example.config;
+package com.estima.config;
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;

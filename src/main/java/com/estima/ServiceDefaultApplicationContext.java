@@ -1,9 +1,9 @@
-package com.example;
+package com.estima;
 
-import com.example.config.AuthorizationServerConfig;
-import com.example.config.CorsConfig;
-import com.example.config.ResourceServerConfig;
-import com.example.config.WebSecurityConfigurer;
+import com.estima.config.AuthorizationServerConfig;
+import com.estima.config.CorsConfig;
+import com.estima.config.ResourceServerConfig;
+import com.estima.config.WebSecurityConfigurer;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration;
@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 
 @Configuration
-@ComponentScan("com.example.resource")
+@ComponentScan("com.estima.resource")
 @Import({
         // security
         WebSecurityConfigurer.class,
