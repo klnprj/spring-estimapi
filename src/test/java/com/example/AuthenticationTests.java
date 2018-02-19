@@ -45,6 +45,7 @@ public class AuthenticationTests {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "password");
         params.add("client_id", CLIENT_ID);
+        params.add("client_secret", CLIENT_SECRET);  // todo: remove and use basic auth
         params.add("username", username);
         params.add("password", password);
 
@@ -64,7 +65,7 @@ public class AuthenticationTests {
 
     @Test
     public void givenAccessToken_whenGetSecureRequest_thenOk() throws Exception {
-        String accessToken = obtainAccessToken("admin@mail.ru", "$2a$10$60mMZ0uJq7Ygpp0kaWcNoOwEXZRQVEdIVX5aYvyiC7cw5fyreOf3C");
+        String accessToken = obtainAccessToken("admin@mail.ru", "password");
 
         assertNotNull(accessToken);
 
