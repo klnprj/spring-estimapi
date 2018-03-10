@@ -49,8 +49,7 @@ public class AuthenticationTests {
         params.add("username", username);
         params.add("password", password);
 
-        ResultActions result
-                = mockMvc.perform(post("/oauth/token")
+        ResultActions result = mockMvc.perform(post("/oauth/token")
                 .params(params)
                 .with(httpBasic(CLIENT_ID, CLIENT_SECRET))
                 .accept("application/json;charset=UTF-8"))

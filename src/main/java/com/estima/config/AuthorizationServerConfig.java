@@ -38,8 +38,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 	private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 	@Override
-	public void configure(AuthorizationServerSecurityConfigurer security)
-			throws Exception {
+	public void configure(AuthorizationServerSecurityConfigurer security) {
 		security.passwordEncoder(passwordEncoder)
 				.allowFormAuthenticationForClients();  // todo: на клиенте сделать basic auth
 	}
