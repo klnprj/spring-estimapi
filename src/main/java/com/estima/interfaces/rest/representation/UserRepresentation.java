@@ -1,5 +1,9 @@
 package com.estima.interfaces.rest.representation;
 
+import com.estima.domain.User;
+import lombok.Getter;
+
+@Getter
 public class UserRepresentation {
 
     private String id;
@@ -8,4 +12,8 @@ public class UserRepresentation {
     private boolean enabled;
 
 
+    public UserRepresentation(User user) {
+        this.id = user.getId().asString();
+        this.name = user.getName();
+    }
 }

@@ -10,7 +10,7 @@ import java.util.Map;
 @RequestMapping("/api/buildings")
 public class BuildingManagementResource {
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity list() {
         return ResponseEntity.ok().build();
     }
@@ -20,7 +20,7 @@ public class BuildingManagementResource {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity add(@RequestBody Map building) {
         return ResponseEntity.created(URI.create("/api/buildings/" + 1)).build();
     }
