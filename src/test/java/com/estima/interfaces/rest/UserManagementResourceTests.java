@@ -19,10 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 
-import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -62,18 +59,17 @@ public class UserManagementResourceTests {
         mockMvc.perform(get("/api/users/profile")
                 .header("Authorization", "Bearer " + accessToken))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("id").value(is("admin@mail.ru")));
-//                .andExpect(jsonPath("$").value(allOf(
-//                        hasProperty("id", is("id"))
-////                        hasProperty("email"),
-////                        hasProperty("name"),
-////                        hasProperty("enabled")
-////                        hasProperty("password"),
-////                        hasProperty("accountExpired"),
-////                        hasProperty("accountLocked"),
-////                        hasProperty("passwordExpired"),
-////                        hasProperty("class")
-//                )));
+                .andExpect(jsonPath("$").value(allOf(
+                        hasEntry(is("id"), is("admin@mail.ru")),
+                        hasEntry(is("email"), is("admin@mail.ru")),
+                        hasEntry(is("name"), is("admin@mail.ru")),
+                        hasKey("enabled")
+//                        hasKey("password"),
+//                        hasKey("accountExpired"),
+//                        hasKey("accountLocked"),
+//                        hasKey("passwordExpired"),
+//                        hasKey("class")
+                )));
     }
 
     @Test
@@ -81,12 +77,6 @@ public class UserManagementResourceTests {
         mockMvc.perform(get("/api/users")
                 .header("Authorization", "Bearer " + accessToken))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id").value(is("admin@mail.ru")));
-//                .andExpect(jsonPath("$").value(containsInAnyOrder((allOf(
-//                        hasProperty("id", is("id"))
-////                        hasProperty("email"),
-////                        hasProperty("name"),
-////                        hasProperty("enabled")
-//                )))));
+                .andExpect(jsonPath("$[?(@.id == 'admin@mail.ru')]").exists());
     }
 }

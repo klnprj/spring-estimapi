@@ -19,8 +19,12 @@ public class User {
     @Column(name = "username", insertable = false, updatable = false)
     private String name;
 
-    public User(String name) {
-        this.id = UserId.of(name);
-        this.name = name;
+    @Column(name = "username", insertable = false, updatable = false)
+    private String email;
+
+    public User(String email) {
+        this.id = UserId.of(email);
+        this.name = email;
+        this.email = email;
     }
 }
