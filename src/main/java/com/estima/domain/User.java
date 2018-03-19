@@ -22,9 +22,12 @@ public class User {
     @Column(name = "username", insertable = false, updatable = false)
     private String email;
 
+    private boolean enabled;
+
     public User(String email) {
         this.id = UserId.of(email);
         this.name = email;
         this.email = email;
+        this.enabled = true;
     }
 }

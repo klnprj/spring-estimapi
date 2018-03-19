@@ -16,5 +16,6 @@ public class UserRepresentation {
         this.id = user.getId().asString();
         this.name = user.getName();
         this.email = user.getEmail();
+        this.enabled = user.isEnabled();
     }
 }

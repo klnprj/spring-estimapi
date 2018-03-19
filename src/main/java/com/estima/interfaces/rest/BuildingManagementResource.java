@@ -1,5 +1,10 @@
 package com.estima.interfaces.rest;
 
+import com.estima.app.BuildingSelection;
+import com.estima.domain.Building;
+import com.estima.domain.BuildingNotFoundException;
+import com.estima.interfaces.rest.representation.BuildingRepresentation;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -8,7 +13,10 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/buildings")
+@AllArgsConstructor
 public class BuildingManagementResource {
+
+    private BuildingSelection buildings;
 
     @GetMapping
     public ResponseEntity list() {
@@ -16,8 +24,9 @@ public class BuildingManagementResource {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity get(@PathVariable("id") Long id) {
-        return ResponseEntity.ok().build();
+    public ResponseEntity<BuildingRepresentation> get(@PathVariable("id") Long id) throws BuildingNotFoundException {
+        Building building = buildings.get(id);
+        return ResponseEntity.ok(new BuildingRepresentation(building));
     }
 
     @PostMapping
