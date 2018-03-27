@@ -22,8 +22,12 @@ public class Building {
     private String location;
 //    private DictionaryItem client;
 //    private DictionaryItem project;
-//    private User author;
-//    private String description;
+//    @OneToOne
+//    @JoinColumn(name = "")
+    // todo: как заменить id (long) у старого пользователя на id (varchar) у нового
+    @Column(name = "author_id")
+    private Long author;
+    private String description;
 //    private String status;
 //
 //    @Temporal(TemporalType.TIMESTAMP)

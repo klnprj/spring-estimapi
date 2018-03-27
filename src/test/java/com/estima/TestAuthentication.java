@@ -16,6 +16,10 @@ public class TestAuthentication {
     private static final String CLIENT_ID = "test_client";
     private static final String CLIENT_SECRET = "clientpassword";
 
+    public static String obtainAdminAccessToken(MockMvc mockMvc) throws Exception {
+        return obtainAccessToken(mockMvc, "admin@mail.ru", "password");
+    }
+
     public static String obtainAccessToken(MockMvc mockMvc, String username, String password) throws Exception {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "password");

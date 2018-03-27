@@ -2,6 +2,9 @@ package com.estima.interfaces.rest;
 
 import com.estima.ServiceLauncher;
 import com.estima.TestAuthentication;
+import com.estima.app.BuildingSelection;
+import com.estima.domain.Building;
+import com.estima.interfaces.rest.representation.BuildingRepresentation;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -35,6 +39,9 @@ public class BuildingManagementResourceTests {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private BuildingSelection buildingSelection;
 
     private String accessToken;
 
@@ -64,5 +71,22 @@ public class BuildingManagementResourceTests {
                         hasKey(is("contacts")),
                         hasKey(is("status"))
                 )));
+
+        Long buildingId = 1L;
+        BuildingRepresentation building = new BuildingRepresentation(buildingSelection.get(buildingId));
+
+        assertThat(building, allOf(
+                hasProperty("id", is(1L)),
+                hasProperty("name", is("Building 1")),
+                hasProperty("address", is("Address 1")),
+                hasProperty("location", is("POINT(40.0 40.0)")),
+                hasProperty("description", is("Description 1")),
+                hasProperty("author", allOf(
+                        hasProperty("id", is("admin@mail.ru")),
+                        hasProperty("name", is("admin@mail.ru")),
+                        hasProperty("email", is("admin@mail.ru")),
+                        hasProperty("enabled", is(true))
+                ))
+        ));
     }
 }
