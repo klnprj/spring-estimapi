@@ -20,14 +20,17 @@ public class Building {
     private String name;
     private String address;
     private String location;
-//    private DictionaryItem client;
-//    private DictionaryItem project;
-//    @OneToOne
-//    @JoinColumn(name = "")
-    // todo: как заменить id (long) у старого пользователя на id (varchar) у нового
-    @Column(name = "author_id")
-    private Long author;
+
+    @OneToOne
+    @JoinColumn(name = "author")
+    private User author;
+
     private String description;
+
+    // todo: тест на получение данных из БД
+    private DictionaryItem client;
+//    private DictionaryItem project;
+
 //    private String status;
 //
 //    @Temporal(TemporalType.TIMESTAMP)

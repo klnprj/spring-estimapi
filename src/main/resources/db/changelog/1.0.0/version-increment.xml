@@ -5,6 +5,7 @@
 
     <include file="20171231-1-legacy-schema.xml" relativeToChangelogFile="true"/>
     <include file="20180110-1-initial-oauth.xml" relativeToChangelogFile="true"/>
+    <include file="20180116-1-migrate-building-author-id.sql" relativeToChangelogFile="true"/>
     <include file="20180117-1-legacy-migrate.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

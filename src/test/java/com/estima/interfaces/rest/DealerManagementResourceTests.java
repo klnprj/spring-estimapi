@@ -23,8 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 @SqlGroup({
         @Sql("/testdata/users-records.sql"),
         @Sql("/testdata/authorities-records.sql"),
-        @Sql("/testdata/clients-records.sql"),
-        @Sql("/testdata/dealer-records.sql")
+        @Sql("/testdata/clients-records.sql")
+//        @Sql("/testdata/dealer-records.sql")
 })
 public class DealerManagementResourceTests {
 

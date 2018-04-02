@@ -59,17 +59,15 @@ public class UserManagementResourceTests {
         mockMvc.perform(get("/api/users/profile")
                 .header("Authorization", "Bearer " + accessToken))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$").value(allOf(
-                        hasEntry(is("id"), is("admin@mail.ru")),
-                        hasEntry(is("email"), is("admin@mail.ru")),
-                        hasEntry(is("name"), is("admin@mail.ru")),
-                        hasKey("enabled")
+                .andExpect(jsonPath("id").value(is("admin@mail.ru")))
+                .andExpect(jsonPath("email").value(is("admin@mail.ru")))
+                .andExpect(jsonPath("name").value(is("admin@mail.ru")))
+                .andExpect(jsonPath("enabled").value(is(true)));
 //                        hasKey("password"),
 //                        hasKey("accountExpired"),
 //                        hasKey("accountLocked"),
 //                        hasKey("passwordExpired"),
 //                        hasKey("class")
-                )));
     }
 
     @Test

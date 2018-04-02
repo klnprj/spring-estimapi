@@ -27,6 +27,7 @@ public class BuildingRepresentation {
         this.name = building.getName();
         this.address = building.getAddress();
         this.description = building.getDescription();
-//        this.author = new UserRepresentation(building.getAuthor());
+        this.location = building.getLocation();
+        this.author = new UserRepresentation(building.getAuthor());
     }
 }
