@@ -2,7 +2,7 @@ package com.estima.interfaces.rest;
 
 import com.estima.app.UsersSource;
 import com.estima.domain.User;
-import com.estima.domain.UserNotFoundException;
+import com.estima.domain.ex.UserMissingException;
 import com.estima.interfaces.rest.representation.UserRepresentation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +28,7 @@ public class UserManagementResource {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<UserRepresentation> current() throws UserNotFoundException {
+    public ResponseEntity<UserRepresentation> current() throws UserMissingException {
         User currentUser = users.profile();
         return ResponseEntity.ok(new UserRepresentation(currentUser));
     }

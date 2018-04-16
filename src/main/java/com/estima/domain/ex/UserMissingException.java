@@ -1,9 +1,11 @@
-package com.estima.domain;
+package com.estima.domain.ex;
 
-public class UserNotFoundException extends Exception {
+import com.estima.domain.UserId;
+
+public class UserMissingException extends Exception {
     private String userId;
 
-    public UserNotFoundException(UserId userId) {
+    public UserMissingException(UserId userId) {
         super("Не найден пользователь с идентификатором [" + userId.asString() + "]");
         this.userId = userId.asString();
     }

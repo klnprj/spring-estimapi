@@ -2,7 +2,7 @@ package com.estima.interfaces.rest;
 
 import com.estima.app.BuildingSelection;
 import com.estima.domain.Building;
-import com.estima.domain.BuildingNotFoundException;
+import com.estima.domain.ex.BuildingMissingException;
 import com.estima.interfaces.rest.representation.BuildingRepresentation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +24,7 @@ public class BuildingManagementResource {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BuildingRepresentation> get(@PathVariable("id") Long id) throws BuildingNotFoundException {
+    public ResponseEntity<BuildingRepresentation> get(@PathVariable("id") Long id) throws BuildingMissingException {
         Building building = buildings.get(id);
         return ResponseEntity.ok(new BuildingRepresentation(building));
     }

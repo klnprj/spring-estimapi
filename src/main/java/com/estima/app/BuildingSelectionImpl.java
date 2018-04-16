@@ -1,7 +1,7 @@
 package com.estima.app;
 
 import com.estima.domain.Building;
-import com.estima.domain.BuildingNotFoundException;
+import com.estima.domain.ex.BuildingMissingException;
 import com.estima.domain.BuildingRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,8 +15,8 @@ public class BuildingSelectionImpl implements BuildingSelection {
     private BuildingRepository buildings;
 
     @Override
-    public Building get(Long id) throws BuildingNotFoundException {
-        return buildings.get(id).orElseThrow(() -> new BuildingNotFoundException(id));
+    public Building get(Long id) throws BuildingMissingException {
+        return buildings.get(id).orElseThrow(() -> new BuildingMissingException(id));
     }
 
     @Override

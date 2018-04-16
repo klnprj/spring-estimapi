@@ -1,0 +1,1 @@
+insert into dictionary(id, version, key, name) values(1, 1, 'DL', 'Dealers');

@@ -2,7 +2,7 @@ package com.estima.app;
 
 import com.estima.domain.User;
 import com.estima.domain.UserId;
-import com.estima.domain.UserNotFoundException;
+import com.estima.domain.ex.UserMissingException;
 import com.estima.domain.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -21,11 +21,11 @@ public class Users implements UsersSource {
     private UserRepository users;
 
     @Override
-    public User profile() throws UserNotFoundException {
+    public User profile() throws UserMissingException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUsername = ((org.springframework.security.core.userdetails.User) authentication.getPrincipal()).getUsername();
         UserId currentUserId = UserId.of(currentUsername);
-        return users.get(currentUserId).orElseThrow(() -> new UserNotFoundException(currentUserId));
+        return users.get(currentUserId).orElseThrow(() -> new UserMissingException(currentUserId));
     }
 
     @Override

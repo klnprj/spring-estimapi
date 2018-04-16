@@ -25,6 +25,8 @@ import static org.junit.Assert.assertThat;
         @Sql("/testdata/users-records.sql"),
         @Sql("/testdata/authorities-records.sql"),
         @Sql("/testdata/clients-records.sql"),
+        @Sql("/testdata/dictionary-records.sql"),
+        @Sql("/testdata/dictionary-item-records.sql"),
         @Sql("/testdata/building-records.sql")
 })
 public class BuildingSelectionTests {

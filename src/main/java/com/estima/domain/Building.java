@@ -27,8 +27,10 @@ public class Building {
 
     private String description;
 
-    // todo: тест на получение данных из БД
+    @OneToOne
+    @JoinColumn(name = "client_id")
     private DictionaryItem client;
+    // todo: тест на получение данных из БД
 //    private DictionaryItem project;
 
 //    private String status;
