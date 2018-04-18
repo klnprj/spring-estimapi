@@ -1,12 +1,12 @@
 package com.estima.interfaces.rest.representation;
 
+import com.estima.domain.DictionaryItem;
 import lombok.Getter;
 
 @Getter
-public class ClientRepresentation {
-    private Long id;
-    private String title;
-    private String contactName;
-    private String contactPosition;
-    private String phone;
+public class ClientRepresentation extends DictionaryItemRepresentation {
+
+    public ClientRepresentation(DictionaryItem item) {
+        super(item);
+    }
 }

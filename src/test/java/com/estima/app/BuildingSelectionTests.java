@@ -43,7 +43,8 @@ public class BuildingSelectionTests {
                 hasProperty("id", is(1L)),
                 hasProperty("name", is("Building 1")),
                 hasProperty("address", is("Address 1")),
-                hasProperty("location", is("POINT(40.0 40.0)"))
+                hasProperty("location", is("POINT(40.0 40.0)")),
+                hasProperty("client", hasProperty("id", is(10L)))
         ));
     }
 }

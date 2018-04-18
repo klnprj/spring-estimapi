@@ -79,8 +79,8 @@ public class DictionaryItemManagementResourceTests {
                 hasProperty("phone", is("111111")),
                 hasProperty("name", is("Company 1")),
                 hasProperty("dictionary", allOf(
-                        hasProperty("key", is("DL")),
-                        hasProperty("name", is("Dealers"))
+                        hasProperty("key", is("customers")),
+                        hasProperty("name", is("Заказчики"))
                 ))
         ));
     }

@@ -30,8 +30,11 @@ public class Building {
     @OneToOne
     @JoinColumn(name = "client_id")
     private DictionaryItem client;
-    // todo: тест на получение данных из БД
-//    private DictionaryItem project;
+
+    @OneToOne
+    @JoinColumn(name = "project_id")
+    // fixme: судя по данным всегда NULL, можно убрать?
+    private DictionaryItem project;
 
 //    private String status;
 //

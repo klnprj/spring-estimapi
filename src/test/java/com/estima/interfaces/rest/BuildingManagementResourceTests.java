@@ -88,6 +88,13 @@ public class BuildingManagementResourceTests {
                         hasProperty("name", is("admin@mail.ru")),
                         hasProperty("email", is("admin@mail.ru")),
                         hasProperty("enabled", is(true))
+                )),
+                hasProperty("client", allOf(
+                        hasProperty("id", is(10L)),
+                        hasProperty("title", is("Company 1")),
+                        hasProperty("contactName", is("User 1")),
+                        hasProperty("contactPosition", is("Manager")),
+                        hasProperty("phone", is("111111"))
                 ))
         ));
     }
