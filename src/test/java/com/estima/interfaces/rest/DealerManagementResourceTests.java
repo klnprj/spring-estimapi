@@ -39,7 +39,17 @@ public class DealerManagementResourceTests {
     }
 
     @Test
-    public void test() {
+    public void givenDealerNotExists_whenPosting_thenCreated() throws Exception {
+        //todo:
+    }
 
+    @Test
+    public void givenDealerExists_whenGettingById_thenReturned() throws Exception {
+        //todo:
+    }
+
+    @Test
+    public void givenDealersExist_whenGettingList_thenReturned() throws Exception {
+        //todo:
     }
 }

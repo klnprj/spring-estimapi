@@ -98,4 +98,24 @@ public class BuildingManagementResourceTests {
                 ))
         ));
     }
+
+    @Test
+    public void givenBuildingsExist_whenGettingList_thenReturned() throws Exception {
+        //todo:
+    }
+
+    @Test
+    public void givenBuildingsExist_whenGettingLocations_thenReturned() throws Exception {
+        //todo:
+    }
+
+    @Test
+    public void givenBuildingNotExists_whenPosting_thenCreated() throws Exception {
+        //todo:
+    }
+
+    @Test
+    public void givenBuildingExists_whenPutting_thenUpdated() throws Exception {
+        //todo:
+    }
 }

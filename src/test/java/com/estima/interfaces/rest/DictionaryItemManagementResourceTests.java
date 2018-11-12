@@ -84,4 +84,24 @@ public class DictionaryItemManagementResourceTests {
                 ))
         ));
     }
+
+    @Test
+    public void givenItemNotExists_whenPosting_thenCreated() throws Exception {
+        //todo:
+    }
+
+    @Test
+    public void givenItemsExist_whenListing_thenReturned() throws Exception {
+        //todo:
+    }
+
+    @Test
+    public void givenItemsExist_whenCounting_thenReturned() throws Exception {
+        //todo:
+    }
+
+    @Test
+    public void givenItemExists_whenDeleting_thenRemoved() throws Exception {
+
+    }
 }

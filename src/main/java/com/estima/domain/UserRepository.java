@@ -8,4 +8,6 @@ public interface UserRepository {
     Optional<User> get(UserId userId);
 
     List<User> asList();
+
+    void add(User user);
 }

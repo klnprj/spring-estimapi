@@ -1,9 +1,6 @@
 package com.estima;
 
-import com.estima.config.AuthorizationServerConfig;
-import com.estima.config.CorsConfig;
-import com.estima.config.ResourceServerConfig;
-import com.estima.config.WebSecurityConfigurer;
+import com.estima.config.*;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
@@ -29,6 +26,7 @@ import javax.sql.DataSource;
         ResourceServerConfig.class,
 
         // web
+        WebConfiguration.class,
         CorsConfig.class,
         WebMvcAutoConfiguration.class,
         DispatcherServletAutoConfiguration.class,

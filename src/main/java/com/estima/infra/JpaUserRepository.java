@@ -28,6 +28,12 @@ public class JpaUserRepository implements UserRepository {
         return entityManager.createQuery("FROM User", User.class).getResultList();
     }
 
+    @Override
+    @Transactional
+    public void add(User user) {
+        entityManager.persist(user);
+    }
+
     @PersistenceContext
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;

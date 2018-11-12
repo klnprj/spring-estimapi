@@ -4,11 +4,14 @@ import com.estima.domain.User;
 import com.estima.domain.UserId;
 import com.estima.domain.ex.UserMissingException;
 import com.estima.domain.UserRepository;
+import com.estima.interfaces.rest.request.UserCreateRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Objects;
 
@@ -32,5 +35,17 @@ public class Users implements UsersSource {
     public Collection<User> all() {
         // todo: remove filtering
         return users.asList().stream().filter(Objects::nonNull).collect(toList());
+    }
+
+    @Override
+    public User get(UserId userId) throws UserMissingException {
+        return users.get(userId).orElseThrow(() -> new UserMissingException(userId));
+    }
+
+    @Override
+    public User create(@NotNull @Valid UserCreateRequest request) {
+        User user = request.asUser();
+        users.add(request.asUser());
+        return user;
     }
 }
