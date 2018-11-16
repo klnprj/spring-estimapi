@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
@@ -21,6 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -102,6 +105,13 @@ public class BuildingManagementResourceTests {
     @Test
     public void givenBuildingsExist_whenGettingList_thenReturned() throws Exception {
         //todo:
+        mockMvc.perform(get("/api/buildings")
+                .header("Authorization", "Bearer " + accessToken))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").value(hasSize(2)))
+                .andExpect(jsonPath("$[0].name").value(is("Building 1")))
+                .andExpect(jsonPath("$[1].name").value(is("Building 2")));
     }
 
     @Test
@@ -111,7 +121,15 @@ public class BuildingManagementResourceTests {
 
     @Test
     public void givenBuildingNotExists_whenPosting_thenCreated() throws Exception {
-        //todo:
+        mockMvc.perform(post("/api/buildings")
+                .header("Authorization", "Bearer " + accessToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\": \"Building 3\", \"address\": \"Address 3\", \"location\": \"POINT(60, 60)\", \"description\": \"Description 3\", \"status\": \"unused?\", \"client\": {\"id\": 10}}"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(notNullValue()))
+                .andExpect(jsonPath("$.name").value(is("Building 3")))
+                .andExpect(jsonPath("$.author.id").value(is("admin@mail.ru")));
     }
 
     @Test

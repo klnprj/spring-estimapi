@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 import java.util.Collection;
 import java.util.Optional;
@@ -18,13 +19,22 @@ public class JpaBuildingRepository implements BuildingRepository {
     @Override
     @Transactional(readOnly = true)
     public Optional<Building> get(Long id) {
-        return Optional.ofNullable(entityManager.find(Building.class, id));
+        return Optional.ofNullable(entityManager.find(Building.class, id, LockModeType.OPTIMISTIC));
     }
 
     @Override
     @Transactional(readOnly = true)
     public Collection<Building> asList() {
         return entityManager.createQuery("FROM Building b", Building.class).getResultList();
+    }
+
+    @Override
+    @Transactional
+    public void add(Building building) {
+        entityManager.persist(building);
+        // fixme: remove if building isn't immediately used
+        entityManager.flush();
+        entityManager.refresh(building);
     }
 
     @PersistenceContext

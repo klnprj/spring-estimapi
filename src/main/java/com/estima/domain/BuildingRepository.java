@@ -6,4 +6,6 @@ import java.util.Optional;
 public interface BuildingRepository {
     Optional<Building> get(Long id);
     Collection<Building> asList();
+
+    void add(Building building);
 }
