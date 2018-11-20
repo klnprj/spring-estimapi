@@ -1,1 +1,2 @@
-insert into dictionaryitem(id, version, dictionary_id, title, contactname, contactposition, phone) values (10, 0, 1, 'Company 1', 'User 1', 'Manager', '111111');
+insert into dictionaryitem(id, version, dictionary_id, title, contactname, contactposition, phone) values (10, 0, 1, 'Company 1', 'User 1', 'Manager 1', '111111');
+insert into dictionaryitem(id, version, dictionary_id, title, contactname, contactposition, phone) values (20, 0, 1, 'Company 2', 'User 2', 'Manager 2', '222222');

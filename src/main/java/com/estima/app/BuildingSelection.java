@@ -15,4 +15,6 @@ public interface BuildingSelection {
     Collection<Building> query();
 
     Building create(@NotNull UserId userId, @NotNull @Valid BuildingCreateRequest request);
+
+    Building update(@NotNull Long id, @NotNull @Valid BuildingCreateRequest request) throws BuildingMissingException;
 }

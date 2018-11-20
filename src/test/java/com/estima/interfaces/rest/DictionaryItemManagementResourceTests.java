@@ -75,7 +75,7 @@ public class DictionaryItemManagementResourceTests {
                 hasProperty("id", is(10L)),
                 hasProperty("title", is("Company 1")),
                 hasProperty("contactName", is("User 1")),
-                hasProperty("contactPosition", is("Manager")),
+                hasProperty("contactPosition", is("Manager 1")),
                 hasProperty("phone", is("111111")),
                 hasProperty("name", is("Company 1")),
                 hasProperty("dictionary", allOf(

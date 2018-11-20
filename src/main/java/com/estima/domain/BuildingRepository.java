@@ -8,4 +8,6 @@ public interface BuildingRepository {
     Collection<Building> asList();
 
     void add(Building building);
+
+    void update(Building building);
 }

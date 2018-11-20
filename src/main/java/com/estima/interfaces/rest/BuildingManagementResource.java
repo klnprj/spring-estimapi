@@ -45,7 +45,8 @@ public class BuildingManagementResource {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity update(@PathVariable("id") Long id, @RequestBody Map building) {
-        return ResponseEntity.noContent().build();
+    public ResponseEntity update(@PathVariable("id") Long id, @RequestBody BuildingCreateRequest request) throws BuildingMissingException {
+        Building building = buildings.update(id, request);
+        return ResponseEntity.ok(new BuildingRepresentation(building));
     }
 }

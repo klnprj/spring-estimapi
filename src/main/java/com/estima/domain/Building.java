@@ -51,10 +51,14 @@ public class Building {
 
     public Building(UserId authorId, String name, String address, String location, String description, String status, long clientId, Long projectId) {
         Objects.requireNonNull(authorId);
+        this.authorId = authorId;
+        with(name, address, location, description, status, clientId, projectId);
+    }
+
+    public Building with(String name, String address, String location, String description, String status, Long clientId, Long projectId) {
         Objects.requireNonNull(name);
         Objects.requireNonNull(address);
         Objects.requireNonNull(location);
-        this.authorId = authorId;
         this.name = name;
         this.address = address;
         this.location = location;
@@ -62,6 +66,7 @@ public class Building {
 //        this.status = status;
         this.clientId = clientId;
         this.projectId = projectId;
+        return this;
     }
 
 //    private String status;

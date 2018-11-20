@@ -3,7 +3,6 @@ package com.estima.interfaces.rest;
 import com.estima.ServiceLauncher;
 import com.estima.TestAuthentication;
 import com.estima.app.BuildingSelection;
-import com.estima.domain.Building;
 import com.estima.interfaces.rest.representation.BuildingRepresentation;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,8 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -96,7 +94,7 @@ public class BuildingManagementResourceTests {
                         hasProperty("id", is(10L)),
                         hasProperty("title", is("Company 1")),
                         hasProperty("contactName", is("User 1")),
-                        hasProperty("contactPosition", is("Manager")),
+                        hasProperty("contactPosition", is("Manager 1")),
                         hasProperty("phone", is("111111"))
                 ))
         ));
@@ -104,7 +102,6 @@ public class BuildingManagementResourceTests {
 
     @Test
     public void givenBuildingsExist_whenGettingList_thenReturned() throws Exception {
-        //todo:
         mockMvc.perform(get("/api/buildings")
                 .header("Authorization", "Bearer " + accessToken))
                 .andDo(print())
@@ -134,6 +131,19 @@ public class BuildingManagementResourceTests {
 
     @Test
     public void givenBuildingExists_whenPutting_thenUpdated() throws Exception {
-        //todo:
+        mockMvc.perform(put("/api/buildings/{id}", 1L)
+                .header("Authorization", "Bearer " + accessToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\": \"Building 10\", \"address\": \"Address 10\", \"location\": \"POINT(100, 100)\", \"description\": \"Description 10\", \"status\": \"unused?\", \"client\": {\"id\": 20}}"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(is(1)))
+                .andExpect(jsonPath("$.author.id").value(is("admin@mail.ru")))
+                .andExpect(jsonPath("$.name").value(is("Building 10")))
+                .andExpect(jsonPath("$.address").value(is("Address 10")))
+                .andExpect(jsonPath("$.location").value(is("POINT(100, 100)")))
+                .andExpect(jsonPath("$.description").value(is("Description 10")))
+                .andExpect(jsonPath("$.client.id").value(is(20)));
+
     }
 }

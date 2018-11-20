@@ -33,6 +33,19 @@ public class JpaBuildingRepository implements BuildingRepository {
     public void add(Building building) {
         entityManager.persist(building);
         // fixme: remove if building isn't immediately used
+        refresh(building);
+    }
+
+    @Override
+    @Transactional
+    public void update(Building building) {
+        entityManager.merge(building);
+        // fixme: remove if building isn't immediately used
+        refresh(building);
+    }
+
+    // to initialize client and project objects
+    private void refresh(Building building) {
         entityManager.flush();
         entityManager.refresh(building);
     }

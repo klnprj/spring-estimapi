@@ -36,4 +36,11 @@ public class BuildingSelectionImpl implements BuildingSelection {
         buildings.add(building);
         return building;
     }
+
+    @Override
+    public Building update(Long id, BuildingCreateRequest request) throws BuildingMissingException {
+        Building building = buildings.get(id).orElseThrow(() -> new BuildingMissingException(id));
+        buildings.update(building.with(request.name(), request.address(), request.location(), request.description(), request.status(), request.clientId(), request.projectId()));
+        return building;
+    }
 }
