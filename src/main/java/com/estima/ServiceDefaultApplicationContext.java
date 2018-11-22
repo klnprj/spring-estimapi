@@ -2,19 +2,18 @@ package com.estima;
 
 import com.estima.config.*;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.*;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Bean;
+import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.servlet.HttpEncodingAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import javax.sql.DataSource;
 
 @Configuration
 @ComponentScan({"com.estima.app", "com.estima.infra", "com.estima.interfaces.rest"})
@@ -30,8 +29,8 @@ import javax.sql.DataSource;
         CorsConfig.class,
         WebMvcAutoConfiguration.class,
         DispatcherServletAutoConfiguration.class,
-        EmbeddedServletContainerAutoConfiguration.class,
-        ServerPropertiesAutoConfiguration.class,
+//        EmbeddedServletContainerAutoConfiguration.class,
+//        ServerPropertiesAutoConfiguration.class,
         ErrorMvcAutoConfiguration.class,
         HttpEncodingAutoConfiguration.class,
         HttpMessageConvertersAutoConfiguration.class,
@@ -44,9 +43,4 @@ import javax.sql.DataSource;
 @EnableTransactionManagement(proxyTargetClass = true)
 public class ServiceDefaultApplicationContext {
 
-    @Bean
-    @ConfigurationProperties(prefix = "oauth2-data-db")
-    public DataSource dataSource() {
-        return DataSourceBuilder.create().build();
-    }
 }

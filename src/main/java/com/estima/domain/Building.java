@@ -15,7 +15,7 @@ public class Building {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "building_id_sequence")
-    @SequenceGenerator(name="building_id_sequence", sequenceName = "building_id_sequence")
+    @SequenceGenerator(name="building_id_sequence", sequenceName = "building_id_sequence", allocationSize = 1)
     private Long id;
 
     @Version

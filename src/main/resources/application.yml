@@ -5,23 +5,32 @@ spring:
     throw-exception-if-no-handler-found: true
   resources:
     add-mappings: false
-server:
-  address: 0.0.0.0
-  port: 10080
-oauth2-data-db:
-  url: jdbc:postgresql://${db-host}:${db-port}/estimasys
-  username: estimasys_admin
-  password: password
-  driver-class-name: org.postgresql.Driver
-  testOnBorrow: true
-  validationQuery: SELECT 1
-  tomcat:
-    max-wait: 5000
-    max-active: 5
-    max-idle: 3
-#oauth2-data-db:
-#  url: jdbc:h2:mem:oauth2db;DB_CLOSE_ON_EXIT=FALSE;MODE=PostgreSQL
-#  driver-class-name: org.h2.Driver
+
+  liquibase:
+    change-log: classpath:db/changelog/master.xml
+
+  datasource:
+    url: jdbc:postgresql://${db-host}:${db-port}/estimasys
+    username: estimasys_admin
+    password: password
+    driver-class-name: org.postgresql.Driver
+    tomcat:
+      max-wait: 5000
+      max-active: 5
+      max-idle: 3
+      testOnBorrow: true
+      validationQuery: SELECT 1
+
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        ddl-auto: validate
+        jdbc.batch_size: 50
+        order_inserts: true
+        order_updates: true
+        format_sql: true
+
 logging:
   pattern:
     console: '%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n'
@@ -35,9 +44,5 @@ logging:
 #    org.hibernate.SQL: DEBUG
 #    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 
-liquibase:
-  change-log: classpath:db/changelog/master.xml
+
 # java -jar C:\Users\admin\.m2\repository\org\liquibase\liquibase-core\3.5.3\liquibase-core-3.5.3.jar --driver=org.postgresql.Driver --classpath=C:\Users\admin\.m2\repository\org\postgresql\postgresql\42.1.4\postgresql-42.1.4.jar --changeLogFile=C:\git\spring-estimapi\src\main\resources\db\changelog\master.xml --url=jdbc:postgresql://localhost:5432/estimasys --username=estimasys_admin --password=password changelogSyncSQL
-
-
-spring.jpa.hibernate.ddl-auto: validate

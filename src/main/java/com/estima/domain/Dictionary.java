@@ -14,7 +14,7 @@ public class Dictionary {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "dictionary_id_sequence")
-    @SequenceGenerator(name="dictionary_id_sequence", sequenceName = "dictionary_id_sequence")
+    @SequenceGenerator(name="dictionary_id_sequence", sequenceName = "dictionary_id_sequence", allocationSize = 1)
     private Long id;
 
     private String key;
