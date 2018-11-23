@@ -1,13 +1,15 @@
 package com.estima.domain;
 
-import java.util.Collection;
+import com.estima.interfaces.rest.request.BuildingSearchRequest;
+
 import java.util.Optional;
 
 public interface BuildingRepository {
     Optional<Building> get(Long id);
-    Collection<Building> asList();
 
     void add(Building building);
 
     void update(Building building);
+
+    BuildingSelection query(BuildingSearchRequest request);
 }

@@ -2,7 +2,7 @@ package com.estima.interfaces.rest;
 
 import com.estima.ServiceLauncher;
 import com.estima.TestAuthentication;
-import com.estima.app.BuildingSelection;
+import com.estima.app.ManageBuilding;
 import com.estima.interfaces.rest.representation.BuildingRepresentation;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,7 +44,7 @@ public class BuildingManagementResourceTests {
     private MockMvc mockMvc;
 
     @Autowired
-    private BuildingSelection buildingSelection;
+    private ManageBuilding manageBuilding;
 
     private String accessToken;
 
@@ -76,12 +76,12 @@ public class BuildingManagementResourceTests {
                 )));
 
         Long buildingId = 1L;
-        BuildingRepresentation building = new BuildingRepresentation(buildingSelection.get(buildingId));
+        BuildingRepresentation building = new BuildingRepresentation(manageBuilding.get(buildingId));
 
         assertThat(building, allOf(
                 hasProperty("id", is(1L)),
                 hasProperty("name", is("Building 1")),
-                hasProperty("address", is("Address 1")),
+                hasProperty("address", is("Address_1")),
                 hasProperty("location", is("POINT(40.0 40.0)")),
                 hasProperty("description", is("Description 1")),
                 hasProperty("author", allOf(
@@ -106,9 +106,58 @@ public class BuildingManagementResourceTests {
                 .header("Authorization", "Bearer " + accessToken))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$").value(hasSize(2)))
-                .andExpect(jsonPath("$[0].name").value(is("Building 1")))
-                .andExpect(jsonPath("$[1].name").value(is("Building 2")));
+                .andExpect(jsonPath("$.buildingList").value(hasSize(3)))
+                .andExpect(jsonPath("$.buildingList[*].name").value(containsInAnyOrder("Building 1", "Building 2", "Building 3")));
+    }
+
+    @Test
+    public void givenBuildingsExist_whenSearching_thenFound() throws Exception {
+        mockMvc.perform(get("/api/buildings?q=_3")
+                .header("Authorization", "Bearer " + accessToken))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.buildingList").value(hasSize(1)))
+                .andExpect(jsonPath("$.buildingList[0].name").value(is("Building 3")));
+    }
+
+    @Test
+    public void givenBuildingsExist_whenFilteringByAuthor_thenFound() throws Exception {
+        mockMvc.perform(get("/api/buildings")
+                .header("Authorization", "Bearer " + accessToken))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.buildingList").value(hasSize(3)))
+                .andExpect(jsonPath("$.buildingList[*].name").value(containsInAnyOrder("Building 1", "Building 2", "Building 3")));
+    }
+
+    @Test
+    public void givenBuildingsExist_whenFilteringByStatus_thenFound() throws Exception {
+        mockMvc.perform(get("/api/buildings")
+                .header("Authorization", "Bearer " + accessToken))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.buildingList").value(hasSize(3)))
+                .andExpect(jsonPath("$.buildingList[*].name").value(containsInAnyOrder("Building 1", "Building 2", "Building 3")));
+    }
+
+    @Test
+    public void givenBuildingsExist_whenFilteringByLastUpdatedFrom_thenFound() throws Exception {
+        mockMvc.perform(get("/api/buildings")
+                .header("Authorization", "Bearer " + accessToken))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.buildingList").value(hasSize(3)))
+                .andExpect(jsonPath("$.buildingList[*].name").value(containsInAnyOrder("Building 1", "Building 2", "Building 3")));
+    }
+
+    @Test
+    public void givenBuildingsExist_whenFilteringByDealer_thenFound() throws Exception {
+        mockMvc.perform(get("/api/buildings")
+                .header("Authorization", "Bearer " + accessToken))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.buildingList").value(hasSize(3)))
+                .andExpect(jsonPath("$.buildingList[*].name").value(containsInAnyOrder("Building 1", "Building 2", "Building 3")));
     }
 
     @Test
@@ -121,11 +170,11 @@ public class BuildingManagementResourceTests {
         mockMvc.perform(post("/api/buildings")
                 .header("Authorization", "Bearer " + accessToken)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\": \"Building 3\", \"address\": \"Address 3\", \"location\": \"POINT(60, 60)\", \"description\": \"Description 3\", \"status\": \"unused?\", \"client\": {\"id\": 10}}"))
+                .content("{\"name\": \"Building 10\", \"address\": \"Address 10\", \"location\": \"POINT(100, 100)\", \"description\": \"Description 10\", \"status\": \"unused?\", \"client\": {\"id\": 10}}"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(notNullValue()))
-                .andExpect(jsonPath("$.name").value(is("Building 3")))
+                .andExpect(jsonPath("$.name").value(is("Building 10")))
                 .andExpect(jsonPath("$.author.id").value(is("admin@mail.ru")));
     }
 

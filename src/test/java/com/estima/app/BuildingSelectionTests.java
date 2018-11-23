@@ -32,17 +32,17 @@ import static org.junit.Assert.assertThat;
 public class BuildingSelectionTests {
 
     @Autowired
-    private BuildingSelection buildingSelection;
+    private ManageBuilding manageBuilding;
 
     @Test
     public void givenBuildingExists_whenGettingById_thenReturnedComplete() throws Exception {
         Long buildingId = 1L;
-        Building building = buildingSelection.get(buildingId);
+        Building building = manageBuilding.get(buildingId);
 
         assertThat(building, allOf(
                 hasProperty("id", is(1L)),
                 hasProperty("name", is("Building 1")),
-                hasProperty("address", is("Address 1")),
+                hasProperty("address", is("Address_1")),
                 hasProperty("location", is("POINT(40.0 40.0)")),
                 hasProperty("client", hasProperty("id", is(10L)))
         ));

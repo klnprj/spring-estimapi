@@ -1,32 +1,33 @@
 package com.estima.interfaces.rest;
 
-import com.estima.app.BuildingSelection;
+import com.estima.app.ManageBuilding;
+import com.estima.app.QueryBuilding;
 import com.estima.domain.Building;
+import com.estima.domain.BuildingSelection;
 import com.estima.domain.UserId;
 import com.estima.domain.ex.BuildingMissingException;
 import com.estima.interfaces.rest.representation.BuildingRepresentation;
+import com.estima.interfaces.rest.representation.BuildingSelectionRepresentation;
 import com.estima.interfaces.rest.request.BuildingCreateRequest;
+import com.estima.interfaces.rest.request.BuildingSearchRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.Collection;
-import java.util.Map;
-
-import static java.util.stream.Collectors.toList;
 
 @RestController
 @RequestMapping("/api/buildings")
 @AllArgsConstructor
 public class BuildingManagementResource {
 
-    private BuildingSelection buildings;
+    private ManageBuilding buildings;
+    private QueryBuilding buildingQuerier;
 
     @GetMapping
-    public ResponseEntity<Collection<BuildingRepresentation>> list() {
-        Collection<Building> buildingCollection = buildings.query();
-        return ResponseEntity.ok(buildingCollection.stream().map(BuildingRepresentation::new).collect(toList()));
+    public ResponseEntity<BuildingSelectionRepresentation> search(BuildingSearchRequest request) {
+        BuildingSelection buildingSelection = buildingQuerier.query(request);
+        return ResponseEntity.ok(new BuildingSelectionRepresentation(buildingSelection));
     }
 
     @GetMapping("/{id}")
