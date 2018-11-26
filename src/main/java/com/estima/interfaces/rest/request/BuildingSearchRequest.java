@@ -1,5 +1,6 @@
 package com.estima.interfaces.rest.request;
 
+import com.estima.domain.UserId;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -18,7 +19,7 @@ public class BuildingSearchRequest {
     private final String sort;
     private final String order;
     private final String query;
-    private final Set<Long> authorsIds;
+    private final Set<UserId> authorsIds;
     private final Set<String> statuses;
     private final LocalDate lastUpdatedFrom;
     private final Set<Long> dealersIds;
@@ -29,7 +30,7 @@ public class BuildingSearchRequest {
                                  @JsonProperty("sort") String sort,
                                  @JsonProperty("order") String order,
                                  @JsonProperty("q") String q,
-                                 @JsonProperty("authorsIds") Set<Long> authorsIds,
+                                 @JsonProperty("authorsIds") Set<UserId> authorsIds,
                                  @JsonProperty("dealersIds") Set<Long> dealersIds,
                                  @JsonProperty("statuses") Set<String> statuses,
                                  @JsonProperty("lastUpdatedFrom") LocalDate lastUpdatedFrom) {

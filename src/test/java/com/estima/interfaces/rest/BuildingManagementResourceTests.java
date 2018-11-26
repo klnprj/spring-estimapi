@@ -122,22 +122,22 @@ public class BuildingManagementResourceTests {
 
     @Test
     public void givenBuildingsExist_whenFilteringByAuthor_thenFound() throws Exception {
-        mockMvc.perform(get("/api/buildings")
+        mockMvc.perform(get("/api/buildings?authorsIds=employee1@mail.ru")
                 .header("Authorization", "Bearer " + accessToken))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.buildingList").value(hasSize(3)))
-                .andExpect(jsonPath("$.buildingList[*].name").value(containsInAnyOrder("Building 1", "Building 2", "Building 3")));
+                .andExpect(jsonPath("$.buildingList").value(hasSize(1)))
+                .andExpect(jsonPath("$.buildingList[0].name").value(is("Building 2")));
     }
 
     @Test
     public void givenBuildingsExist_whenFilteringByStatus_thenFound() throws Exception {
-        mockMvc.perform(get("/api/buildings")
+        mockMvc.perform(get("/api/buildings?statuses=NEW")
                 .header("Authorization", "Bearer " + accessToken))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.buildingList").value(hasSize(3)))
-                .andExpect(jsonPath("$.buildingList[*].name").value(containsInAnyOrder("Building 1", "Building 2", "Building 3")));
+                .andExpect(jsonPath("$.buildingList").value(hasSize(1)))
+                .andExpect(jsonPath("$.buildingList[0].name").value(is("Building 1")));
     }
 
     @Test

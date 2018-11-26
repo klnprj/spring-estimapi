@@ -49,6 +49,10 @@ public class JpaBuildingRepository implements BuildingRepository {
             predicate = cb.and(predicate, buildingRoot.get("status").in(request.statuses()));
         }
 
+        if (!request.authorsIds().isEmpty()) {
+            predicate = cb.and(predicate, buildingRoot.get("authorId").in(request.authorsIds()));
+        }
+
 //        buildingRoot.fetch("messages", JoinType.LEFT);
         cqb.select(buildingRoot);
         cqb.where(predicate);

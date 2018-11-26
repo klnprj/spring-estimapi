@@ -69,7 +69,7 @@ public class Building {
         return this;
     }
 
-//    private String status;
+    private String status;
 //
 //    @Temporal(TemporalType.TIMESTAMP)
 //    private Date latestPositionDateUpdated;
