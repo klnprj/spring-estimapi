@@ -202,7 +202,7 @@ CREATE SEQUENCE message_id_sequence
     NO MAXVALUE
     CACHE 1;
 
-CREATE TABLE "position" (
+CREATE TABLE position (
     id bigint NOT NULL,
     version bigint NOT NULL,
     building_id bigint NOT NULL,

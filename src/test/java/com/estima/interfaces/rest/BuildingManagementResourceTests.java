@@ -5,6 +5,7 @@ import com.estima.TestAuthentication;
 import com.estima.app.ManageBuilding;
 import com.estima.interfaces.rest.representation.BuildingRepresentation;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         @Sql("/testdata/clients-records.sql"),
         @Sql("/testdata/dictionary-records.sql"),
         @Sql("/testdata/dictionary-item-records.sql"),
-        @Sql("/testdata/building-records.sql")
+        @Sql("/testdata/building-records.sql"),
+        @Sql("/testdata/position-records.sql")
 })
 public class BuildingManagementResourceTests {
 
@@ -141,13 +143,14 @@ public class BuildingManagementResourceTests {
     }
 
     @Test
+    @Ignore
     public void givenBuildingsExist_whenFilteringByLastUpdatedFrom_thenFound() throws Exception {
-        mockMvc.perform(get("/api/buildings")
+        mockMvc.perform(get("/api/buildings?lastUpdatedFrom=2018-11-01T13:00:00")
                 .header("Authorization", "Bearer " + accessToken))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.buildingList").value(hasSize(3)))
-                .andExpect(jsonPath("$.buildingList[*].name").value(containsInAnyOrder("Building 1", "Building 2", "Building 3")));
+                .andExpect(jsonPath("$.buildingList").value(hasSize(1)))
+                .andExpect(jsonPath("$.buildingList[*].name").value(is("Building 2")));
     }
 
     @Test

@@ -3,8 +3,12 @@ package com.estima.domain;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
 
 @Entity
@@ -71,14 +75,16 @@ public class Building {
 
     private String status;
 //
-//    @Temporal(TemporalType.TIMESTAMP)
-//    private Date latestPositionDateUpdated;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Formula("(SELECT MAX(p.lastupdated) FROM position p WHERE p.building_id=ID)")
+    private Date latestPositionDateUpdated;
 //
 //    @Temporal(TemporalType.TIMESTAMP)
 //    private Date earliestPositionDateCreated;
 //    private Collection positionsDealers;
 //
-//    private Collection positions;
+    @OneToMany(mappedBy = "building", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Collection<Position> positions = new HashSet<>();
 //    private Collection contacts;
 
 }

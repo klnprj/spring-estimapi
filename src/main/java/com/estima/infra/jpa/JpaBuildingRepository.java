@@ -53,6 +53,10 @@ public class JpaBuildingRepository implements BuildingRepository {
             predicate = cb.and(predicate, buildingRoot.get("authorId").in(request.authorsIds()));
         }
 
+        if (request.lastUpdatedFrom() != null) {
+            cb.and(predicate, cb.greaterThanOrEqualTo(buildingRoot.get("latestPositionDateUpdated"), request.lastUpdatedFrom()));
+        }
+
 //        buildingRoot.fetch("messages", JoinType.LEFT);
         cqb.select(buildingRoot);
         cqb.where(predicate);
