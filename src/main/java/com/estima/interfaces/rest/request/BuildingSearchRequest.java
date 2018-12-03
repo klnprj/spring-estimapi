@@ -33,7 +33,8 @@ public class BuildingSearchRequest {
                                  @JsonProperty("authorsIds") Set<UserId> authorsIds,
                                  @JsonProperty("dealersIds") Set<Long> dealersIds,
                                  @JsonProperty("statuses") Set<String> statuses,
-                                 @JsonProperty("lastUpdatedFrom") LocalDate lastUpdatedFrom) {
+                                 @JsonProperty("lastUpdatedFrom") String lastUpdatedFrom // fixme: bind to LocalDate instead of String
+    ) {
         this.offset = Optional.ofNullable(offset).orElse(0);
         this.max = Optional.ofNullable(max).orElse(100);
         this.sort = Optional.ofNullable(sort).orElse("id"); // todo: creation order by date?
@@ -42,6 +43,6 @@ public class BuildingSearchRequest {
         this.authorsIds = Optional.ofNullable(authorsIds).orElseGet(Collections::emptySet);
         this.dealersIds = Optional.ofNullable(dealersIds).orElseGet(Collections::emptySet);
         this.statuses = Optional.ofNullable(statuses).orElseGet(Collections::emptySet);
-        this.lastUpdatedFrom = lastUpdatedFrom;
+        this.lastUpdatedFrom = Optional.ofNullable(lastUpdatedFrom).map(LocalDate::parse).orElse(null);
     }
 }

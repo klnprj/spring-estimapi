@@ -54,7 +54,7 @@ public class JpaBuildingRepository implements BuildingRepository {
         }
 
         if (request.lastUpdatedFrom() != null) {
-            cb.and(predicate, cb.greaterThanOrEqualTo(buildingRoot.get("latestPositionDateUpdated"), request.lastUpdatedFrom()));
+            predicate = cb.and(predicate, cb.greaterThanOrEqualTo(buildingRoot.get("latestPositionDateUpdated"), request.lastUpdatedFrom()));
         }
 
 //        buildingRoot.fetch("messages", JoinType.LEFT);

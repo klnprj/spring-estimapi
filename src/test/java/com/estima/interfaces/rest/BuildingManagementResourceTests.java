@@ -143,14 +143,13 @@ public class BuildingManagementResourceTests {
     }
 
     @Test
-    @Ignore
     public void givenBuildingsExist_whenFilteringByLastUpdatedFrom_thenFound() throws Exception {
-        mockMvc.perform(get("/api/buildings?lastUpdatedFrom=2018-11-01T13:00:00")
+        mockMvc.perform(get("/api/buildings?lastUpdatedFrom=2018-11-02")
                 .header("Authorization", "Bearer " + accessToken))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.buildingList").value(hasSize(1)))
-                .andExpect(jsonPath("$.buildingList[*].name").value(is("Building 2")));
+                .andExpect(jsonPath("$.buildingList[0].name").value(is("Building 2")));
     }
 
     @Test

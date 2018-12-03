@@ -6,8 +6,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 
@@ -74,10 +74,9 @@ public class Building {
     }
 
     private String status;
-//
-    @Temporal(TemporalType.TIMESTAMP)
+
     @Formula("(SELECT MAX(p.lastupdated) FROM position p WHERE p.building_id=ID)")
-    private Date latestPositionDateUpdated;
+    private LocalDate latestPositionDateUpdated;
 //
 //    @Temporal(TemporalType.TIMESTAMP)
 //    private Date earliestPositionDateCreated;
