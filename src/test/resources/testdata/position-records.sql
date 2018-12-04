@@ -1,3 +1,4 @@
-INSERT INTO position(id, version, building_id, contactname, dealer_id, datecreated, lastupdated) VALUES(1, 0, 1, 'Manager 1', 30, '2018-01-01T12:00:00', '2018-10-01T12:00:00');
-INSERT INTO position(id, version, building_id, contactname, dealer_id, datecreated, lastupdated) VALUES(2, 0, 1, 'Manager 1', 30, '2018-01-01T12:00:00', '2018-11-01T12:00:00');
-INSERT INTO position(id, version, building_id, contactname, dealer_id, datecreated, lastupdated) VALUES(3, 0, 2, 'Manager 2', 30, '2018-01-01T12:00:00', '2018-12-01T12:00:00');
+INSERT INTO position(id, version, building_id, contactname, dealer_id, datecreated, lastupdated) VALUES(1, 0, 1, 'Manager 1', 100, '2018-01-01T12:00:00', '2018-10-01T12:00:00');
+INSERT INTO position(id, version, building_id, contactname, dealer_id, datecreated, lastupdated) VALUES(2, 0, 1, 'Manager 1', 200, '2018-01-01T12:00:00', '2018-11-01T12:00:00');
+INSERT INTO position(id, version, building_id, contactname, dealer_id, datecreated, lastupdated) VALUES(3, 0, 2, 'Manager 2', 300, '2018-01-01T12:00:00', '2018-12-01T12:00:00');
+INSERT INTO position(id, version, building_id, contactname, dealer_id, datecreated, lastupdated) VALUES(4, 0, 2, 'Manager 3', 300, '2018-01-01T12:00:00', '2018-12-01T12:00:00');

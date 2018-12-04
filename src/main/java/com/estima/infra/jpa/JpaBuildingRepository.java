@@ -3,6 +3,7 @@ package com.estima.infra.jpa;
 import com.estima.domain.Building;
 import com.estima.domain.BuildingRepository;
 import com.estima.domain.BuildingSelection;
+import com.estima.domain.Position;
 import com.estima.interfaces.rest.request.BuildingSearchRequest;
 import org.hibernate.query.criteria.internal.OrderImpl;
 import org.springframework.stereotype.Repository;
@@ -37,6 +38,9 @@ public class JpaBuildingRepository implements BuildingRepository {
         Predicate predicate = cb.and();
         Predicate query;
 
+        Join<Building, Position> joinedPositions = buildingRoot.join("positions", JoinType.LEFT);
+        count.join("positions", JoinType.LEFT);
+
         if (request.query() != null) {
             query = cb.or(
                     cb.like(cb.lower(buildingRoot.get("name")), "%" + request.query().trim().toLowerCase() + "%"),
@@ -57,8 +61,12 @@ public class JpaBuildingRepository implements BuildingRepository {
             predicate = cb.and(predicate, cb.greaterThanOrEqualTo(buildingRoot.get("latestPositionDateUpdated"), request.lastUpdatedFrom()));
         }
 
-//        buildingRoot.fetch("messages", JoinType.LEFT);
+        if (!request.dealersIds().isEmpty()) {
+            predicate = cb.and(predicate, joinedPositions.get("dealer").get("id").in(request.dealersIds()));
+        }
+
         cqb.select(buildingRoot);
+        cqb.distinct(true);
         cqb.where(predicate);
         cqb.orderBy(new StringOrder(buildingRoot, request.sort(), request.order()));
 
@@ -67,8 +75,8 @@ public class JpaBuildingRepository implements BuildingRepository {
                 .setFirstResult(request.offset())
                 .getResultList();
 
-//        count.join("messages", JoinType.LEFT);
         cqt.select(cb.count(count));
+        cqt.distinct(true);
         cqt.where(predicate);
 
         Long buildingTotal = entityManager.createQuery(cqt).getSingleResult();

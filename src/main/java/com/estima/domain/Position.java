@@ -25,7 +25,9 @@ public class Position {
     @JoinColumn(name = "building_id")
     private Building building;
 
-//    private DictionaryItem dealer;
+    @ManyToOne(optional=false)
+    @JoinColumn(name="dealer_id", nullable=false, updatable=false)
+    private DictionaryItem dealer;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "datecreated")
