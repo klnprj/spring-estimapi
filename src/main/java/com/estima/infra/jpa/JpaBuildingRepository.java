@@ -4,6 +4,7 @@ import com.estima.domain.Building;
 import com.estima.domain.BuildingRepository;
 import com.estima.domain.BuildingSelection;
 import com.estima.domain.Position;
+import com.estima.interfaces.rest.request.BuildingLocateRequest;
 import com.estima.interfaces.rest.request.BuildingSearchRequest;
 import org.hibernate.query.criteria.internal.OrderImpl;
 import org.springframework.stereotype.Repository;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.criteria.*;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +31,7 @@ public class JpaBuildingRepository implements BuildingRepository {
 
     @Override
     @Transactional(readOnly = true)
+    // todo: move to separate interface?
     public BuildingSelection query(BuildingSearchRequest request) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Building> cqb = cb.createQuery(Building.class);
@@ -75,13 +78,27 @@ public class JpaBuildingRepository implements BuildingRepository {
                 .setFirstResult(request.offset())
                 .getResultList();
 
-        cqt.select(cb.count(count));
-        cqt.distinct(true);
+        cqt.select(cb.countDistinct(count));
         cqt.where(predicate);
 
         Long buildingTotal = entityManager.createQuery(cqt).getSingleResult();
 
         return new BuildingSelection(buildingList, buildingTotal.intValue());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public BuildingSelection locate(BuildingLocateRequest request) {
+        Query qb = entityManager.createNativeQuery("SELECT b.* FROM building b WHERE ST_DWithin(st_geogfromtext(b.location), Geography(ST_MakePoint(:lon, :lat)), :radius)", Building.class);
+
+//        qb.setMaxResults(1000);  // todo: is restriction required?
+        qb.setParameter("lon", request.latLng().lng());
+        qb.setParameter("lat", request.latLng().lat());
+        qb.setParameter("radius", request.radius());
+
+        List<Building> buildingList = qb.getResultList();
+
+        return new BuildingSelection(buildingList, buildingList.size());
     }
 
     @Override

@@ -2,15 +2,20 @@ package com.estima.interfaces.rest;
 
 import com.estima.ServiceLauncher;
 import com.estima.TestAuthentication;
+import com.estima.app.LocateBuilding;
 import com.estima.app.ManageBuilding;
+import com.estima.domain.Building;
+import com.estima.domain.BuildingSelection;
 import com.estima.interfaces.rest.representation.BuildingRepresentation;
+import com.estima.interfaces.rest.request.BuildingLocateRequest;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
@@ -19,8 +24,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
+import static java.util.Collections.singleton;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -49,6 +56,9 @@ public class BuildingManagementResourceTests {
     private ManageBuilding manageBuilding;
 
     private String accessToken;
+
+    @MockBean
+    private LocateBuilding locateBuilding;
 
     @Before
     public void setup() throws Exception {
@@ -109,7 +119,8 @@ public class BuildingManagementResourceTests {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.buildingList").value(hasSize(3)))
-                .andExpect(jsonPath("$.buildingList[*].name").value(containsInAnyOrder("Building 1", "Building 2", "Building 3")));
+                .andExpect(jsonPath("$.buildingList[*].name").value(containsInAnyOrder("Building 1", "Building 2", "Building 3")))
+                .andExpect(jsonPath("$.totalCount").value(is(3)));
     }
 
     @Test
@@ -119,7 +130,9 @@ public class BuildingManagementResourceTests {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.buildingList").value(hasSize(1)))
-                .andExpect(jsonPath("$.buildingList[0].name").value(is("Building 3")));
+                .andExpect(jsonPath("$.buildingList[0].name").value(is("Building 3")))
+                .andExpect(jsonPath("$.totalCount").value(is(1)));
+
     }
 
     @Test
@@ -129,7 +142,8 @@ public class BuildingManagementResourceTests {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.buildingList").value(hasSize(1)))
-                .andExpect(jsonPath("$.buildingList[0].name").value(is("Building 2")));
+                .andExpect(jsonPath("$.buildingList[0].name").value(is("Building 2")))
+                .andExpect(jsonPath("$.totalCount").value(is(1)));
     }
 
     @Test
@@ -139,7 +153,8 @@ public class BuildingManagementResourceTests {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.buildingList").value(hasSize(1)))
-                .andExpect(jsonPath("$.buildingList[0].name").value(is("Building 1")));
+                .andExpect(jsonPath("$.buildingList[0].name").value(is("Building 1")))
+                .andExpect(jsonPath("$.totalCount").value(is(1)));
     }
 
     @Test
@@ -149,7 +164,8 @@ public class BuildingManagementResourceTests {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.buildingList").value(hasSize(1)))
-                .andExpect(jsonPath("$.buildingList[0].name").value(is("Building 2")));
+                .andExpect(jsonPath("$.buildingList[0].name").value(is("Building 2")))
+                .andExpect(jsonPath("$.totalCount").value(is(1)));
     }
 
     @Test
@@ -159,12 +175,33 @@ public class BuildingManagementResourceTests {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.buildingList").value(hasSize(1)))
-                .andExpect(jsonPath("$.buildingList[0].name").value(is("Building 2")));
+                .andExpect(jsonPath("$.buildingList[0].name").value(is("Building 2")))
+                .andExpect(jsonPath("$.totalCount").value(is(1)));
     }
 
     @Test
-    public void givenBuildingsExist_whenGettingLocations_thenReturned() throws Exception {
-        //todo:
+    public void givenBuildingsExist_whenGettingLocationsByLatLng_thenReturned() throws Exception {
+        Building building1 = manageBuilding.get(1L);
+        when(locateBuilding.locate(Mockito.any(BuildingLocateRequest.class))).thenReturn(new BuildingSelection(singleton(building1), 1));
+
+        mockMvc.perform(get("/api/locations?latlng=20,30&radius=10")
+                .header("Authorization", "Bearer " + accessToken))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.buildingList").value(hasSize(1)))
+                .andExpect(jsonPath("$.buildingList[0].name").value(is("Building 1")))
+                .andExpect(jsonPath("$.totalCount").value(is(1)));
+    }
+
+    @Test
+    public void givenBuildingsExist_whenGettingLocationsByFilter_thenReturned() throws Exception {
+        mockMvc.perform(get("/api/locations?statuses=NEW")
+                .header("Authorization", "Bearer " + accessToken))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.buildingList").value(hasSize(1)))
+                .andExpect(jsonPath("$.buildingList[0].name").value(is("Building 1")))
+                .andExpect(jsonPath("$.totalCount").value(is(1)));
     }
 
     @Test
