@@ -2,9 +2,11 @@ package com.estima.app;
 
 import com.estima.domain.Building;
 import com.estima.domain.BuildingRepository;
+import com.estima.domain.Position;
 import com.estima.domain.UserId;
 import com.estima.domain.ex.BuildingMissingException;
 import com.estima.interfaces.rest.request.BuildingCreateRequest;
+import com.estima.interfaces.rest.request.PositionCreateRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -20,6 +22,8 @@ public interface ManageBuilding {
 
     Building update(@NotNull Long id, @NotNull @Valid BuildingCreateRequest request) throws BuildingMissingException;
 
+    Position addPosition(@NotNull @Valid PositionCreateRequest request) throws BuildingMissingException;
+
 
     // default implementation
     @Service
@@ -27,7 +31,7 @@ public interface ManageBuilding {
     @AllArgsConstructor
     class Default implements ManageBuilding {
 
-        private BuildingRepository buildings;
+        private final BuildingRepository buildings;
 
         @Override
         public Building get(Long id) throws BuildingMissingException {
@@ -46,6 +50,17 @@ public interface ManageBuilding {
             Building building = buildings.get(id).orElseThrow(() -> new BuildingMissingException(id));
             buildings.update(building.with(request.name(), request.address(), request.location(), request.description(), request.status(), request.clientId(), request.projectId()));
             return building;
+        }
+
+        @Override
+        public Position addPosition(@NotNull @Valid PositionCreateRequest request) throws BuildingMissingException {
+            Building building = buildings.get(request.buildingId()).orElseThrow(() -> new BuildingMissingException(request.buildingId()));
+            Position newPosition = request.asPosition();
+
+            building.addPosition(newPosition);
+            buildings.update(building);
+
+            return building.positionList().get(building.getPositions().size() - 1);
         }
     }
 }

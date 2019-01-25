@@ -3,14 +3,18 @@ package com.estima.domain;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
 @Table(name = "position")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
+@Accessors(fluent = true)
 public class Position {
 
     @Id
@@ -21,13 +25,19 @@ public class Position {
     @Version
     private Long version;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "building_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "building_id", insertable = false, updatable = false)
     private Building building;
 
-    @ManyToOne(optional=false)
-    @JoinColumn(name="dealer_id", nullable=false, updatable=false)
+    @Column(name = "building_id")
+    private Long buildingId;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "dealer_id", insertable = false, updatable = false)
     private DictionaryItem dealer;
+
+    @Column(name = "dealer_id")
+    private Long dealerId;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "datecreated")
@@ -54,4 +64,20 @@ public class Position {
     @Column(name = "dealerprice")
     private Integer dealerPrice;
     private Integer quantity;
+
+    public Position(long buildingId, long dealerId, String contactName, String type, String spec, String grossPrice,
+                    String total, String status, Integer dealerPrice, Integer quantity) {
+        Objects.requireNonNull(contactName);
+        this.buildingId = buildingId;
+        this.dealerId = dealerId;
+        this.dateCreated = Date.from(Instant.now());
+        this.contactName = contactName;
+        this.type = type;
+        this.spec = spec;
+        this.grossPrice = grossPrice;
+        this.total = total;
+        this.status = status;
+        this.dealerPrice = dealerPrice;
+        this.quantity = quantity;
+    }
 }

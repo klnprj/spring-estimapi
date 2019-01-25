@@ -7,9 +7,7 @@ import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "building")
@@ -29,7 +27,7 @@ public class Building {
     private String address;
     private String location;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author", insertable = false, updatable = false)
     private User author;
 
@@ -53,6 +51,20 @@ public class Building {
     @Column(name = "project_id")
     private Long projectId;
 
+    private String status;
+
+    @Formula("(SELECT MAX(p.lastupdated) FROM position p WHERE p.building_id=ID)")
+    private LocalDate latestPositionDateUpdated;
+//
+//    @Temporal(TemporalType.TIMESTAMP)
+//    private Date earliestPositionDateCreated;
+//    private Collection positionsDealers;
+//
+    @OneToMany(mappedBy = "building", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("dateCreated")
+    private Collection<Position> positions = new HashSet<>();
+//    private Collection contacts;
+
     public Building(UserId authorId, String name, String address, String location, String description, String status, long clientId, Long projectId) {
         Objects.requireNonNull(authorId);
         this.authorId = authorId;
@@ -73,17 +85,11 @@ public class Building {
         return this;
     }
 
-    private String status;
+    public void addPosition(Position position) {
+        this.positions.add(position);
+    }
 
-    @Formula("(SELECT MAX(p.lastupdated) FROM position p WHERE p.building_id=ID)")
-    private LocalDate latestPositionDateUpdated;
-//
-//    @Temporal(TemporalType.TIMESTAMP)
-//    private Date earliestPositionDateCreated;
-//    private Collection positionsDealers;
-//
-    @OneToMany(mappedBy = "building", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Collection<Position> positions = new HashSet<>();
-//    private Collection contacts;
-
+    public List<Position> positionList() {
+        return Collections.unmodifiableList(new ArrayList<>(this.positions));
+    }
 }

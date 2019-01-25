@@ -1,0 +1,13 @@
+{
+  "buildingId": 1,
+  "dealerId": 100,
+  "contactName": "test-contact",
+  "type": "contact-type",
+  "spec": "spec-1",
+  "grossPrice": "500",
+  "total": "1000",
+  "status": "approved",
+  "dateShipped": "2018-12-12",
+  "dealerPrice": 100,
+  "quantity": 5
+}

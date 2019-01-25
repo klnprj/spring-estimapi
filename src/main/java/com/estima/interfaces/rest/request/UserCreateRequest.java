@@ -3,7 +3,8 @@ package com.estima.interfaces.rest.request;
 import com.estima.domain.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
-import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.constraints.NotEmpty;
 
 @Getter
 public class UserCreateRequest {

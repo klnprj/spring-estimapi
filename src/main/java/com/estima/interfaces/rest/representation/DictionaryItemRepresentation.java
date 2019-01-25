@@ -15,12 +15,12 @@ public class DictionaryItemRepresentation {
     private DictionaryRepresentation dictionary;
 
     public DictionaryItemRepresentation(DictionaryItem item) {
-        this.id = item.getId();
-        this.title = item.getTitle();
-        this.contactName = item.getContactName();
-        this.contactPosition = item.getContactPosition();
-        this.phone = item.getPhone();
-        this.name = item.getTitle(); // fixme: remove
-        this.dictionary = new DictionaryRepresentation(item.getDictionary());
+        this.id = item.id();
+        this.title = item.title();
+        this.contactName = item.contactName();
+        this.contactPosition = item.contactPosition();
+        this.phone = item.phone();
+        this.name = item.title(); // fixme: remove
+        this.dictionary = new DictionaryRepresentation(item.dictionary());
     }
 }

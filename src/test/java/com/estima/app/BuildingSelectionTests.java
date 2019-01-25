@@ -2,6 +2,7 @@ package com.estima.app;
 
 import com.estima.ServiceLauncher;
 import com.estima.domain.Building;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,8 @@ public class BuildingSelectionTests {
     private ManageBuilding manageBuilding;
 
     @Test
+    @Ignore
+    // TODO: remove in favor of BuildingManagementResourceTests.givenBuildingExists_whenGettingById_thenReturned ?
     public void givenBuildingExists_whenGettingById_thenReturnedComplete() throws Exception {
         Long buildingId = 1L;
         Building building = manageBuilding.get(buildingId);

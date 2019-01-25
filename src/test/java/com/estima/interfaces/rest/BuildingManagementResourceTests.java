@@ -70,6 +70,7 @@ public class BuildingManagementResourceTests {
 
         mockMvc.perform(get("/api/buildings/{id}", 1)
                 .header("Authorization", "Bearer " + accessToken))
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").value(allOf(
                         hasKey(is("id")),

@@ -8,7 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
 @Getter
 public class User {
 
