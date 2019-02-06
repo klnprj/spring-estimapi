@@ -4,6 +4,7 @@ import com.estima.app.ManageBuilding;
 import com.estima.domain.Position;
 import com.estima.domain.ex.BuildingMissingException;
 import com.estima.interfaces.rest.representation.PositionRepresentation;
+import com.estima.interfaces.rest.representation.PositionSelectionRepresentation;
 import com.estima.interfaces.rest.request.PositionCreateRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.Map;
 
 @RestController
@@ -23,9 +25,10 @@ public class PositionManagementResource {
     private final ManageBuilding manageBuilding;
     private final ObjectMapper objectMapper;
 
-    @GetMapping("/")
-    public ResponseEntity list() {
-        return ResponseEntity.ok().build();
+    @GetMapping
+    public ResponseEntity<PositionSelectionRepresentation> list(@RequestParam Long buildingId) throws BuildingMissingException {
+        Collection<Position> positions = manageBuilding.buildingPositions(buildingId);
+        return ResponseEntity.ok(new PositionSelectionRepresentation(positions));
     }
 
     @GetMapping("/{id}")

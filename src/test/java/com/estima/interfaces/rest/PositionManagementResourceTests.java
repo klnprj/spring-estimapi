@@ -18,9 +18,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.hasKey;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -31,14 +31,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("test")
 @Transactional
 @AutoConfigureMockMvc
-@SqlGroup({
-        @Sql("/testdata/users-records.sql"),
-        @Sql("/testdata/authorities-records.sql"),
-        @Sql("/testdata/clients-records.sql"),
-        @Sql("/testdata/building-records.sql"),
-        @Sql("/testdata/dictionary-records.sql"),
-        @Sql("/testdata/dictionary-item-records.sql")
-})
 public class PositionManagementResourceTests {
 
     private String accessToken;
@@ -55,6 +47,14 @@ public class PositionManagementResourceTests {
     }
 
     @Test
+    @SqlGroup({
+            @Sql("/testdata/users-records.sql"),
+            @Sql("/testdata/authorities-records.sql"),
+            @Sql("/testdata/clients-records.sql"),
+            @Sql("/testdata/building-records.sql"),
+            @Sql("/testdata/dictionary-records.sql"),
+            @Sql("/testdata/dictionary-item-records.sql")
+    })
     public void givenPositionNotExists_whenPosting_thenCreated() throws Exception {
         assertEquals(0, buildingRepository.get(1L).get().getPositions().size());
 
@@ -85,21 +85,60 @@ public class PositionManagementResourceTests {
     }
 
     @Test
+    @SqlGroup({
+            @Sql("/testdata/users-records.sql"),
+            @Sql("/testdata/authorities-records.sql"),
+            @Sql("/testdata/clients-records.sql"),
+            @Sql("/testdata/building-records.sql"),
+            @Sql("/testdata/dictionary-records.sql"),
+            @Sql("/testdata/dictionary-item-records.sql"),
+            @Sql("/testdata/position-records.sql")
+    })
     public void givenPositionsExist_whenGettingList_thenReturned() throws Exception {
-        //todo:
+        assertEquals(2, buildingRepository.get(1L).get().getPositions().size());
+
+        mockMvc.perform(get("/api/positions?buildingId={buildingId}", 1L)
+                .header("Authorization", "Bearer " + accessToken))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("positionList").value(hasSize(2)));
     }
 
     @Test
+    @SqlGroup({
+            @Sql("/testdata/users-records.sql"),
+            @Sql("/testdata/authorities-records.sql"),
+            @Sql("/testdata/clients-records.sql"),
+            @Sql("/testdata/building-records.sql"),
+            @Sql("/testdata/dictionary-records.sql"),
+            @Sql("/testdata/dictionary-item-records.sql")
+    })
     public void givenPositionExists_whenGettingById_thenReturned() throws Exception {
         //todo:
     }
 
     @Test
+    @SqlGroup({
+            @Sql("/testdata/users-records.sql"),
+            @Sql("/testdata/authorities-records.sql"),
+            @Sql("/testdata/clients-records.sql"),
+            @Sql("/testdata/building-records.sql"),
+            @Sql("/testdata/dictionary-records.sql"),
+            @Sql("/testdata/dictionary-item-records.sql")
+    })
     public void givenPositionExists_whenDeleting_thenRemoved() throws Exception {
         //todo:
     }
 
     @Test
+    @SqlGroup({
+            @Sql("/testdata/users-records.sql"),
+            @Sql("/testdata/authorities-records.sql"),
+            @Sql("/testdata/clients-records.sql"),
+            @Sql("/testdata/building-records.sql"),
+            @Sql("/testdata/dictionary-records.sql"),
+            @Sql("/testdata/dictionary-item-records.sql")
+    })
     public void givenPositionExists_whenPutting_thenUpdated() throws Exception {
         //todo:
     }

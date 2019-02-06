@@ -13,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.Collection;
 
 public interface ManageBuilding {
 
@@ -23,6 +24,8 @@ public interface ManageBuilding {
     Building update(@NotNull Long id, @NotNull @Valid BuildingCreateRequest request) throws BuildingMissingException;
 
     Position addPosition(@NotNull @Valid PositionCreateRequest request) throws BuildingMissingException;
+
+    Collection<Position> buildingPositions(@NotNull Long buildingId) throws BuildingMissingException;
 
 
     // default implementation
@@ -61,6 +64,13 @@ public interface ManageBuilding {
             buildings.update(building);
 
             return building.positionList().get(building.getPositions().size() - 1);
+        }
+
+        @Override
+        public Collection<Position> buildingPositions(@NotNull Long buildingId) throws BuildingMissingException {
+            Building building = buildings.get(buildingId).orElseThrow(() -> new BuildingMissingException(buildingId));
+
+            return building.getPositions();
         }
     }
 }
