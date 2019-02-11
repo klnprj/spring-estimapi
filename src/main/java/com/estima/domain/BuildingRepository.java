@@ -15,4 +15,7 @@ public interface BuildingRepository {
     void update(Building building);
 
     BuildingSelection query(BuildingSearchRequest request);
+
+    // FIXME: remove when PositionResource is refactored under Building
+    Optional<Building> getPositionBuilding(Long positionId);
 }

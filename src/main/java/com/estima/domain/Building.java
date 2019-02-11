@@ -1,5 +1,6 @@
 package com.estima.domain;
 
+import com.estima.domain.ex.PositionMissingException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -91,5 +92,16 @@ public class Building {
 
     public List<Position> positionList() {
         return Collections.unmodifiableList(new ArrayList<>(this.positions));
+    }
+
+    public Position position(Long positionId) throws PositionMissingException {
+        return this.positions.stream()
+                .filter(position -> position.id().equals(positionId))
+                .findFirst()
+                .orElseThrow(() -> new PositionMissingException(positionId));
+    }
+
+    public void removePosition(Long positionId) throws PositionMissingException {
+        this.positions.remove(this.position(positionId));
     }
 }

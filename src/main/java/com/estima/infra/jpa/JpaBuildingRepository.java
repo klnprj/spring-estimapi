@@ -10,12 +10,11 @@ import org.hibernate.query.criteria.internal.OrderImpl;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.LockModeType;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
+import javax.persistence.*;
 import javax.persistence.criteria.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -84,6 +83,16 @@ public class JpaBuildingRepository implements BuildingRepository {
         Long buildingTotal = entityManager.createQuery(cqt).getSingleResult();
 
         return new BuildingSelection(buildingList, buildingTotal.intValue());
+    }
+
+    @Override
+    public Optional<Building> getPositionBuilding(Long positionId) {
+        EntityGraph<Position> entityGraph = entityManager.createEntityGraph(Position.class);
+        Map<String, Object> properties = new HashMap<>();
+        properties.put("javax.persistence.fetchgraph", entityGraph);
+        entityGraph.addAttributeNodes("building");
+        Position position = entityManager.find(Position.class, positionId, properties);
+        return Optional.ofNullable(position.building());
     }
 
     @Override

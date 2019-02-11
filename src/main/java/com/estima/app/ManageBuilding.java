@@ -5,6 +5,7 @@ import com.estima.domain.BuildingRepository;
 import com.estima.domain.Position;
 import com.estima.domain.UserId;
 import com.estima.domain.ex.BuildingMissingException;
+import com.estima.domain.ex.PositionMissingException;
 import com.estima.interfaces.rest.request.BuildingCreateRequest;
 import com.estima.interfaces.rest.request.PositionCreateRequest;
 import lombok.AllArgsConstructor;
@@ -26,6 +27,10 @@ public interface ManageBuilding {
     Position addPosition(@NotNull @Valid PositionCreateRequest request) throws BuildingMissingException;
 
     Collection<Position> buildingPositions(@NotNull Long buildingId) throws BuildingMissingException;
+
+    Position getPosition(Long positionId) throws PositionMissingException;
+
+    void removePosition(Long positionId) throws PositionMissingException;
 
 
     // default implementation
@@ -71,6 +76,22 @@ public interface ManageBuilding {
             Building building = buildings.get(buildingId).orElseThrow(() -> new BuildingMissingException(buildingId));
 
             return building.getPositions();
+        }
+
+        @Override
+        public Position getPosition(Long positionId) throws PositionMissingException {
+            // TODO: remove after positions are refactored within building aggregate
+            Building building = buildings.getPositionBuilding(positionId).orElseThrow(() -> new PositionMissingException(positionId));
+            return building.position(positionId);
+        }
+
+        @Override
+        public void removePosition(Long positionId) throws PositionMissingException {
+            Building building = buildings.getPositionBuilding(positionId).orElseThrow(() -> new PositionMissingException(positionId));
+
+            building.removePosition(positionId);
+
+            buildings.update(building);
         }
     }
 }

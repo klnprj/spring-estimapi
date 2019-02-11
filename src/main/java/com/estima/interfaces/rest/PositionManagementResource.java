@@ -3,6 +3,7 @@ package com.estima.interfaces.rest;
 import com.estima.app.ManageBuilding;
 import com.estima.domain.Position;
 import com.estima.domain.ex.BuildingMissingException;
+import com.estima.domain.ex.PositionMissingException;
 import com.estima.interfaces.rest.representation.PositionRepresentation;
 import com.estima.interfaces.rest.representation.PositionSelectionRepresentation;
 import com.estima.interfaces.rest.request.PositionCreateRequest;
@@ -32,8 +33,9 @@ public class PositionManagementResource {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity get(@PathVariable("id") Long id) {
-        return ResponseEntity.ok().build();
+    public ResponseEntity<PositionRepresentation> get(@PathVariable("id") Long id) throws PositionMissingException {
+        Position position = manageBuilding.getPosition(id);
+        return ResponseEntity.ok(new PositionRepresentation(position));
     }
 
     @PostMapping(produces = "application/json;charset=UTF-8")
@@ -51,7 +53,8 @@ public class PositionManagementResource {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable("id") Long id) {
+    public ResponseEntity delete(@PathVariable("id") Long id) throws PositionMissingException {
+        manageBuilding.removePosition(id);
         return ResponseEntity.noContent().build();
     }
 }

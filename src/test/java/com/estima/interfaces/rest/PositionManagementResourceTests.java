@@ -20,8 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.junit.Assert.assertNotNull;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -101,7 +101,22 @@ public class PositionManagementResourceTests {
                 .header("Authorization", "Bearer " + accessToken))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("positionList").value(hasSize(2)));
+                .andExpect(jsonPath("positionList").value(hasSize(2)))
+                .andExpect(jsonPath("positionList[0]").value(allOf(
+                        hasKey("id"),
+                        hasKey("building"),
+                        hasKey("dateCreated"),
+                        hasKey("dateShipped"),
+                        hasKey("dealer"),
+                        hasKey("contactName"),
+                        hasKey("type"),
+                        hasKey("spec"),
+                        hasKey("grossPrice"),
+                        hasKey("total"),
+                        hasKey("status"),
+                        hasKey("dealerPrice"),
+                        hasKey("quantity")
+                )));
     }
 
     @Test
@@ -111,10 +126,29 @@ public class PositionManagementResourceTests {
             @Sql("/testdata/clients-records.sql"),
             @Sql("/testdata/building-records.sql"),
             @Sql("/testdata/dictionary-records.sql"),
-            @Sql("/testdata/dictionary-item-records.sql")
+            @Sql("/testdata/dictionary-item-records.sql"),
+            @Sql("/testdata/position-records.sql")
     })
     public void givenPositionExists_whenGettingById_thenReturned() throws Exception {
-        //todo:
+        assertNotNull(buildingRepository.get(1L).get().position(1L));
+
+        mockMvc.perform(get("/api/positions/{positionId}", 1L)
+                .header("Authorization", "Bearer " + accessToken))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").value(is(1)))
+                .andExpect(jsonPath("building.id").value(is(1)))
+                .andExpect(jsonPath("dateCreated").value(notNullValue()))
+                .andExpect(jsonPath("dateShipped").value(nullValue()))
+                .andExpect(jsonPath("dealer.id").value(is(100)))
+                .andExpect(jsonPath("contactName").value(is("Manager 1")))
+                .andExpect(jsonPath("type").value(nullValue()))
+                .andExpect(jsonPath("spec").value(nullValue()))
+                .andExpect(jsonPath("grossPrice").value(nullValue()))
+                .andExpect(jsonPath("total").value(nullValue()))
+                .andExpect(jsonPath("status").value(nullValue()))
+                .andExpect(jsonPath("dealerPrice").value(nullValue()))
+                .andExpect(jsonPath("quantity").value(nullValue()));
     }
 
     @Test
@@ -124,10 +158,18 @@ public class PositionManagementResourceTests {
             @Sql("/testdata/clients-records.sql"),
             @Sql("/testdata/building-records.sql"),
             @Sql("/testdata/dictionary-records.sql"),
-            @Sql("/testdata/dictionary-item-records.sql")
+            @Sql("/testdata/dictionary-item-records.sql"),
+            @Sql("/testdata/position-records.sql")
     })
     public void givenPositionExists_whenDeleting_thenRemoved() throws Exception {
-        //todo:
+        assertEquals(2, buildingRepository.get(1L).get().getPositions().size());
+
+        mockMvc.perform(delete("/api/positions/{positionId}", 1L)
+                .header("Authorization", "Bearer " + accessToken))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+
+        assertEquals(1, buildingRepository.get(1L).get().getPositions().size());
     }
 
     @Test
