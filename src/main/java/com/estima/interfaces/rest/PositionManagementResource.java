@@ -7,6 +7,7 @@ import com.estima.domain.ex.PositionMissingException;
 import com.estima.interfaces.rest.representation.PositionRepresentation;
 import com.estima.interfaces.rest.representation.PositionSelectionRepresentation;
 import com.estima.interfaces.rest.request.PositionCreateRequest;
+import com.estima.interfaces.rest.request.PositionUpdateRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -47,9 +48,12 @@ public class PositionManagementResource {
         return new ResponseEntity<>(representation, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity update(@PathVariable("id") Long id, @RequestBody Map position) {
-        return ResponseEntity.noContent().build();
+    @PutMapping(value = "/{id}", produces = "application/json;charset=UTF-8")
+    public ResponseEntity update(@PathVariable("id") Long id, @RequestBody PositionUpdateRequest request) throws PositionMissingException, JsonProcessingException {
+        Position position = manageBuilding.updatePosition(id, request);
+        // FIXME: json conversion
+        String representation = objectMapper.writeValueAsString(new PositionRepresentation(position));
+        return ResponseEntity.ok(representation);
     }
 
     @DeleteMapping("/{id}")

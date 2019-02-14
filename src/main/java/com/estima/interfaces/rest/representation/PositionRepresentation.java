@@ -3,7 +3,10 @@ package com.estima.interfaces.rest.representation;
 import com.estima.domain.Position;
 import lombok.Getter;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
+import java.util.Optional;
 
 @Getter
 public class PositionRepresentation {
@@ -11,7 +14,7 @@ public class PositionRepresentation {
     private final long id;
     private final BuildingRefRepresentation building;
     private final Date dateCreated;
-    private final Date dateShipped;
+    private final LocalDate dateShipped;
     private final DealerRepresentation dealer;
     private final String contactName;
     private final String type;
@@ -26,7 +29,7 @@ public class PositionRepresentation {
         this.id = position.id();
         this.building = new BuildingRefRepresentation(position.building());
         this.dateCreated = position.dateCreated();
-        this.dateShipped = position.dateShipped();
+        this.dateShipped = Optional.ofNullable(position.dateShipped()).map(d -> d.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()).orElse(null);
         this.dealer = new DealerRepresentation(position.dealer());
         this.contactName = position.contactName();
         this.type = position.type();

@@ -4,6 +4,8 @@ import com.estima.ServiceLauncher;
 import com.estima.TestAuthentication;
 import com.estima.TestResource;
 import com.estima.domain.BuildingRepository;
+import com.estima.domain.Position;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,8 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -179,9 +180,42 @@ public class PositionManagementResourceTests {
             @Sql("/testdata/clients-records.sql"),
             @Sql("/testdata/building-records.sql"),
             @Sql("/testdata/dictionary-records.sql"),
-            @Sql("/testdata/dictionary-item-records.sql")
+            @Sql("/testdata/dictionary-item-records.sql"),
+            @Sql("/testdata/position-records.sql")
     })
     public void givenPositionExists_whenPutting_thenUpdated() throws Exception {
-        //todo:
+        mockMvc.perform(put("/api/positions/{positionId}", 1L)
+                .header("Authorization", "Bearer " + accessToken)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new TestResource("/testdata/position-update.json").asString()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").value(is(1)))
+                .andExpect(jsonPath("building.id").value(is(1)))
+                .andExpect(jsonPath("dateCreated").value(notNullValue()))
+                .andExpect(jsonPath("dateShipped").value(is("2018-12-30")))
+                .andExpect(jsonPath("dealer.id").value(is(100)))
+                .andExpect(jsonPath("contactName").value(is("test-contact2")))
+                .andExpect(jsonPath("type").value(is("contact-type2")))
+                .andExpect(jsonPath("spec").value(is("spec-2")))
+                .andExpect(jsonPath("grossPrice").value(is("1000")))
+                .andExpect(jsonPath("total").value(is("2000")))
+                .andExpect(jsonPath("status").value(is("shipped")))
+                .andExpect(jsonPath("dealerPrice").value(is(150)))
+                .andExpect(jsonPath("quantity").value(is(6)));
+
+//        Position position = buildingRepository.getPositionBuilding(1L).get().position(1L);
+//
+//        assertThat(position, allOf(
+//                hasProperty("contactName", is("test-contact2")),
+//                hasProperty("type", is("contact-type2")),
+//                hasProperty("spec", is("spec-2")),
+//                hasProperty("grossPrice", is("1000")),
+//                hasProperty("total", is("2000")),
+//                hasProperty("status", is("shipped")),
+//                hasProperty("dateShipped", is("2018-12-30")),
+//                hasProperty("dealerPrice", is(150)),
+//                hasProperty("quantity", is(6))
+//        ));
     }
 }

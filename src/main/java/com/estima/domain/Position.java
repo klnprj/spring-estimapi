@@ -80,4 +80,19 @@ public class Position {
         this.dealerPrice = dealerPrice;
         this.quantity = quantity;
     }
+
+    public Position updatedWith(String contactName, String type, String spec, String grossPrice, String total,
+                                String status, Date dateShipped, int dealerPrice, int quantity) {
+        Objects.requireNonNull(contactName);
+        this.contactName = contactName;
+        this.type = type;
+        this.spec = spec;
+        this.grossPrice = grossPrice;
+        this.total = total;
+        this.status = status;
+        this.dateShipped = dateShipped;
+        this.dealerPrice = dealerPrice;
+        this.quantity = quantity;
+        return this;
+    }
 }

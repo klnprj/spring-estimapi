@@ -1,0 +1,11 @@
+{
+  "contactName": "test-contact2",
+  "type": "contact-type2",
+  "spec": "spec-2",
+  "grossPrice": "1000",
+  "total": "2000",
+  "status": "shipped",
+  "dateShipped": "2018-12-30",
+  "dealerPrice": 150,
+  "quantity": 6
+}

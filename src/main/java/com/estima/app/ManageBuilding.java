@@ -8,6 +8,7 @@ import com.estima.domain.ex.BuildingMissingException;
 import com.estima.domain.ex.PositionMissingException;
 import com.estima.interfaces.rest.request.BuildingCreateRequest;
 import com.estima.interfaces.rest.request.PositionCreateRequest;
+import com.estima.interfaces.rest.request.PositionUpdateRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -18,7 +19,7 @@ import java.util.Collection;
 
 public interface ManageBuilding {
 
-    Building get(Long id) throws BuildingMissingException;
+    Building get(@NotNull Long id) throws BuildingMissingException;
 
     Building create(@NotNull UserId userId, @NotNull @Valid BuildingCreateRequest request);
 
@@ -28,9 +29,11 @@ public interface ManageBuilding {
 
     Collection<Position> buildingPositions(@NotNull Long buildingId) throws BuildingMissingException;
 
-    Position getPosition(Long positionId) throws PositionMissingException;
+    Position getPosition(@NotNull Long positionId) throws PositionMissingException;
 
-    void removePosition(Long positionId) throws PositionMissingException;
+    void removePosition(@NotNull Long positionId) throws PositionMissingException;
+
+    Position updatePosition(@NotNull Long positionId, @NotNull @Valid PositionUpdateRequest request) throws PositionMissingException;
 
 
     // default implementation
@@ -42,7 +45,7 @@ public interface ManageBuilding {
         private final BuildingRepository buildings;
 
         @Override
-        public Building get(Long id) throws BuildingMissingException {
+        public Building get(@NotNull Long id) throws BuildingMissingException {
             return buildings.get(id).orElseThrow(() -> new BuildingMissingException(id));
         }
 
@@ -54,7 +57,7 @@ public interface ManageBuilding {
         }
 
         @Override
-        public Building update(Long id, BuildingCreateRequest request) throws BuildingMissingException {
+        public Building update(@NotNull Long id, @NotNull @Valid BuildingCreateRequest request) throws BuildingMissingException {
             Building building = buildings.get(id).orElseThrow(() -> new BuildingMissingException(id));
             buildings.update(building.with(request.name(), request.address(), request.location(), request.description(), request.status(), request.clientId(), request.projectId()));
             return building;
@@ -79,19 +82,33 @@ public interface ManageBuilding {
         }
 
         @Override
-        public Position getPosition(Long positionId) throws PositionMissingException {
+        public Position getPosition(@NotNull Long positionId) throws PositionMissingException {
             // TODO: remove after positions are refactored within building aggregate
             Building building = buildings.getPositionBuilding(positionId).orElseThrow(() -> new PositionMissingException(positionId));
             return building.position(positionId);
         }
 
         @Override
-        public void removePosition(Long positionId) throws PositionMissingException {
+        public void removePosition(@NotNull Long positionId) throws PositionMissingException {
             Building building = buildings.getPositionBuilding(positionId).orElseThrow(() -> new PositionMissingException(positionId));
 
             building.removePosition(positionId);
 
             buildings.update(building);
+        }
+
+        @Override
+        public Position updatePosition(@NotNull Long positionId, @NotNull @Valid PositionUpdateRequest request) throws PositionMissingException {
+            Building building = buildings.getPositionBuilding(positionId).orElseThrow(() -> new PositionMissingException(positionId));
+            Position position = building.position(positionId);
+
+            position.updatedWith(request.contactName(), request.type(), request.spec(),
+                    request.grossPrice(), request.total(), request.status(), request.dateShipped(), request.dealerPrice(),
+                    request.quantity());
+
+            buildings.update(building);
+
+            return position;
         }
     }
 }
